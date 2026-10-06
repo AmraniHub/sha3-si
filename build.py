@@ -11,7 +11,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(ROOT, 'docs')
 DOMAIN = 'https://sha3.si'
 SALE_URL = 'https://forsale.dynadot.com/sha3.si'
-GA_ID = ''  # e.g. 'G-XXXXXXXXXX' once a GA4 property exists for sha3.si
+GA_ID = 'G-MLWFJRRJ1T'  # GA4 property for sha3.si
 TODAY = date.today().isoformat()
 
 
