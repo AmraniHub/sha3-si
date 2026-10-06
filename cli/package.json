@@ -1,0 +1,42 @@
+{
+  "name": "sha3-check",
+  "version": "1.0.0",
+  "description": "SHA-3, SHAKE and Ethereum Keccak-256 checksums from the command line. Verify downloads with npx sha3-check.",
+  "bin": {
+    "sha3-check": "bin/sha3-check.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "test": "node --test test/cli.test.js"
+  },
+  "keywords": [
+    "sha3",
+    "sha-3",
+    "sha3-256",
+    "sha3-512",
+    "keccak",
+    "keccak256",
+    "shake256",
+    "checksum",
+    "hash",
+    "cli",
+    "fips202",
+    "ethereum"
+  ],
+  "homepage": "https://sha3.si",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmraniHub/sha3-si.git",
+    "directory": "cli"
+  },
+  "bugs": "https://github.com/AmraniHub/sha3-si/issues",
+  "license": "MIT"
+}
