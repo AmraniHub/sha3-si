@@ -56,6 +56,8 @@ header.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 60
 .logo .mark { flex: 0 0 auto; border-radius: 7px; }
 .logo span { color: var(--accent); }
 .row.focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.row.match { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--panel-2)); }
+.row.match .name b::after { content: "  \2713 match"; color: var(--accent); font-size: 12px; }
 nav.main { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; margin-left: auto; }
 nav.main a { color: var(--muted); }
 nav.main a:hover, nav.main a.on { color: var(--text); text-decoration: none; }

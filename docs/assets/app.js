@@ -53,6 +53,36 @@
     }
   }
 
+  // Checksum verification: paste the hash a download page published, and every
+  // row that matches it is marked. Built here so both calculator layouts get it.
+  var cmpWrap = document.createElement('div');
+  cmpWrap.className = 'opts';
+  cmpWrap.innerHTML = '<label style="flex:1 1 100%">Verify a checksum: paste the expected hash ' +
+    '<input id="expect" type="text" spellcheck="false" autocomplete="off" placeholder="optional" ' +
+    'style="width:100%;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--line);' +
+    'border-radius:6px;padding:6px 8px;font:13px var(--mono)"></label>' +
+    '<span id="verdict" class="note" style="margin:0"></span>';
+  errBox.parentNode.insertBefore(cmpWrap, errBox);
+  var expectEl = document.getElementById('expect');
+  var verdict = document.getElementById('verdict');
+
+  function compare() {
+    var want = expectEl.value.trim().toLowerCase().replace(/^0x/, '').replace(/\s+/g, '');
+    var hit = '';
+    ALGOS.forEach(function (a) {
+      var row = document.getElementById('v_' + a.id).parentNode;
+      var got = document.getElementById('v_' + a.id).textContent.toLowerCase();
+      var ok = want.length >= 8 && got === want;
+      row.classList.toggle('match', ok);
+      if (ok) hit = a.name;
+    });
+    if (!want) { verdict.textContent = ''; return; }
+    verdict.textContent = hit ? 'Match: this is the ' + hit + ' of your input.'
+      : 'No match with any SHA-3 or Keccak output of this input.';
+    verdict.style.color = hit ? 'var(--accent)' : 'var(--warn)';
+  }
+  expectEl.addEventListener('input', compare);
+
   function hexToBytes(h) {
     h = h.replace(/^0x/i, '').replace(/[^0-9a-fA-F]/g, '');
     if (h.length % 2) throw new Error('Hex input must have an even number of digits.');
@@ -101,6 +131,7 @@
       var bytes = a.xof ? f.array(data, outBits()) : f.array(data);
       document.getElementById('v_' + a.id).textContent = format(bytes);
     });
+    compare();
   }
 
   function clear() {
