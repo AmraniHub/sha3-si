@@ -525,6 +525,10 @@ write('/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n'
       ''.join(f'  <url><loc>{DOMAIN}{pth}</loc><lastmod>{TODAY}</lastmod></url>\n' for pth in PAGES) +
       '</urlset>\n')
 write('/CNAME', 'sha3.si\n')
+# IndexNow key file (shared key used by APPS/indexnow-daily). Bare token, no
+# newline, so autocrlf can never alter the bytes the engines compare.
+INDEXNOW_KEY = 'c5ac5e393c4434c4d852f653b7258532'
+write(f'/{INDEXNOW_KEY}.txt', INDEXNOW_KEY)
 write('/.nojekyll', '')
 write('/favicon.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
       '<rect width="64" height="64" rx="12" fill="#0b0f14"/>'
