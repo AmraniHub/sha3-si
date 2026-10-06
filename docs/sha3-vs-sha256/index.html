@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHA-3 vs SHA-256: differences, security and speed | sha3.si</title>
+<meta name="description" content="SHA-3 vs SHA-256 compared: design (sponge vs Merkle-Damgard), security, length extension, speed, and which one to choose.">
+<link rel="canonical" href="https://sha3.si/sha3-vs-sha256/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHA-3 vs SHA-256: differences, security and speed | sha3.si">
+<meta property="og:description" content="SHA-3 vs SHA-256 compared: design (sponge vs Merkle-Damgard), security, length extension, speed, and which one to choose.">
+<meta property="og:url" content="https://sha3.si/sha3-vs-sha256/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "SHA-3 vs SHA-256", "description": "SHA-3 vs SHA-256 compared: design (sponge vs Merkle-Damgard), security, length extension, speed, and which one to choose.", "url": "https://sha3.si/sha3-vs-sha256/", "dateModified": "2026-10-06", "author": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "publisher": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "about": {"@type": "Thing", "name": "SHA-3", "sameAs": "https://en.wikipedia.org/wiki/SHA-3"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is SHA-3 more secure than SHA-256?", "acceptedAnswer": {"@type": "Answer", "text": "Both are considered secure with no practical attacks. SHA3-256 and SHA-256 give the same 128-bit collision resistance. SHA-3 has a different design and is immune to length-extension attacks."}}, {"@type": "Question", "name": "Is SHA-3 faster than SHA-256?", "acceptedAnswer": {"@type": "Answer", "text": "In software on common CPUs, SHA-256 is usually faster, especially with SHA hardware instructions. SHA-3 is very efficient in hardware."}}, {"@type": "Question", "name": "Should I switch from SHA-256 to SHA-3?", "acceptedAnswer": {"@type": "Answer", "text": "Not for security reasons alone. Choose SHA-3 when a standard or protocol requires it, when you need an XOF (SHAKE), or when you want design diversity."}}]}</script>
+</head>
+<body>
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/">sha3<span>.si</span></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/" class=on>SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<article>
+<h1>SHA-3 vs SHA-256</h1>
+<p class="kicker">Both are secure, standardised and widely supported. They differ in design, not in strength, and that difference is the whole point.</p>
+
+<div class="tablewrap"><table>
+<tr><th></th><th>SHA-256 (SHA-2)</th><th>SHA3-256 (SHA-3)</th></tr>
+<tr><td>Standard</td><td>FIPS 180-4</td><td>FIPS 202</td></tr>
+<tr><td>Published</td><td>2001</td><td>2015</td></tr>
+<tr><td>Design</td><td>Merkle-Damgard with a Davies-Meyer compression function</td><td>Sponge construction on the Keccak-f[1600] permutation</td></tr>
+<tr><td>Output</td><td>256 bits</td><td>256 bits</td></tr>
+<tr><td>Collision resistance</td><td>128 bits</td><td>128 bits</td></tr>
+<tr><td>Length-extension attack</td><td>Vulnerable when misused as a MAC (use HMAC)</td><td>Not vulnerable</td></tr>
+<tr><td>Variable-length output</td><td>No</td><td>Yes, via SHAKE128 / SHAKE256</td></tr>
+<tr><td>Software speed</td><td>Usually faster, with dedicated CPU instructions</td><td>Usually slower in software, fast in hardware</td></tr>
+<tr><td>Typical use</td><td>TLS, Bitcoin, code signing, general hashing</td><td>Post-quantum standards, protocols that need an XOF, design diversity</td></tr>
+</table></div>
+
+<h2>Same input, unrelated outputs</h2>
+<p>"hello world" through each function:</p>
+<div class="tablewrap"><table>
+<tr><th>Function</th><th>Digest (hex)</th></tr>
+<tr><td>SHA-256</td><td class="mono"><code>b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9</code></td></tr>
+<tr><td>SHA3-256</td><td class="mono"><code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code></td></tr>
+<tr><td>Keccak-256</td><td class="mono"><code>47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad</code></td></tr>
+</table></div>
+
+<h2>Which should you use?</h2>
+<ul>
+<li><b>Use SHA-256</b> when you need maximum compatibility and speed on ordinary CPUs, or when a protocol (TLS, Bitcoin) already fixes it.</li>
+<li><b>Use SHA-3</b> when a standard requires it (for example the post-quantum ML-KEM and ML-DSA), when you need a variable-length output (SHAKE), or when you want a hash with a completely different design from SHA-2.</li>
+<li><b>For a MAC</b>, use HMAC-SHA-256 or KMAC. Never hash(key + message) with SHA-256.</li>
+</ul>
+
+<h2>Frequently asked</h2>
+<h3>Is SHA-3 more secure than SHA-256?</h3><p>Both are considered secure with no practical attacks. SHA3-256 and SHA-256 give the same 128-bit collision resistance. SHA-3 has a different design and is immune to length-extension attacks.</p><h3>Is SHA-3 faster than SHA-256?</h3><p>In software on common CPUs, SHA-256 is usually faster, especially with SHA hardware instructions. SHA-3 is very efficient in hardware.</p><h3>Should I switch from SHA-256 to SHA-3?</h3><p>Not for security reasons alone. Choose SHA-3 when a standard or protocol requires it, when you need an XOF (SHAKE), or when you want design diversity.</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+
+</body>
+</html>

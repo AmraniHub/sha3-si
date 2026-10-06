@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is SHA-3? Keccak, the sponge construction and FIPS 202 | sha3.si</title>
+<meta name="description" content="What SHA-3 is: the NIST FIPS 202 hash standard built on Keccak and the sponge construction. Output sizes, rate and capacity, SHAKE, and where SHA-3 is used today.">
+<link rel="canonical" href="https://sha3.si/what-is-sha3/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="What is SHA-3? Keccak, the sponge construction and FIPS 202 | sha3.si">
+<meta property="og:description" content="What SHA-3 is: the NIST FIPS 202 hash standard built on Keccak and the sponge construction. Output sizes, rate and capacity, SHAKE, and where SHA-3 is used today.">
+<meta property="og:url" content="https://sha3.si/what-is-sha3/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "What is SHA-3?", "description": "What SHA-3 is: the NIST FIPS 202 hash standard built on Keccak and the sponge construction. Output sizes, rate and capacity, SHAKE, and where SHA-3 is used today.", "url": "https://sha3.si/what-is-sha3/", "dateModified": "2026-10-06", "author": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "publisher": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "about": {"@type": "Thing", "name": "SHA-3", "sameAs": "https://en.wikipedia.org/wiki/SHA-3"}}</script>
+</head>
+<body>
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/">sha3<span>.si</span></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/" class=on>What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<article>
+<h1>What is SHA-3?</h1>
+<p class="kicker">The short version: SHA-3 is the newest member of the Secure Hash Algorithm family, standardised by NIST in FIPS 202 (2015). It is built on Keccak, a design that works nothing like SHA-2, so the two families do not share weaknesses.</p>
+
+<h2>Where it came from</h2>
+<p>In 2007 NIST opened a public competition for a new hash function, as insurance in case attacks on MD5 and SHA-1 ever carried over to SHA-2. Sixty-four designs were submitted. In 2012 NIST chose <b>Keccak</b>, by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche, and published it as SHA-3 in <b>FIPS 202</b> in August 2015.</p>
+<p>SHA-3 was never a replacement for SHA-2, which remains secure. It is a second, independent standard, so the world has a well-tested fallback built on different mathematics.</p>
+
+<h2>The sponge construction</h2>
+<p>SHA-3 keeps a 1600-bit internal state and works in two phases:</p>
+<ol>
+<li><b>Absorbing.</b> The padded message is split into blocks. Each block is XORed into the first part of the state (the <i>rate</i>), then the whole state is scrambled by the Keccak-f[1600] permutation (24 rounds).</li>
+<li><b>Squeezing.</b> Output is read from the rate part of the state, running the permutation again whenever more output is needed.</li>
+</ol>
+<p>The rest of the state, the <i>capacity</i>, is never directly touched by input or output. Its size sets the security level. Because the internal state is much larger than the output, SHA-3 is not vulnerable to the length-extension attacks that affect SHA-256 and SHA-512 when used naively as a MAC.</p>
+
+<h2>The SHA-3 family</h2>
+<div class="tablewrap"><table>
+<tr><th>Function</th><th>Output</th><th>Rate (bits)</th><th>Capacity (bits)</th><th>Collision resistance</th></tr>
+<tr><td>SHA3-224</td><td>224 bits</td><td>1152</td><td>448</td><td>112 bits</td></tr>
+<tr><td>SHA3-256</td><td>256 bits</td><td>1088</td><td>512</td><td>128 bits</td></tr>
+<tr><td>SHA3-384</td><td>384 bits</td><td>832</td><td>768</td><td>192 bits</td></tr>
+<tr><td>SHA3-512</td><td>512 bits</td><td>576</td><td>1024</td><td>256 bits</td></tr>
+<tr><td>SHAKE128</td><td>any length</td><td>1344</td><td>256</td><td>up to 128 bits</td></tr>
+<tr><td>SHAKE256</td><td>any length</td><td>1088</td><td>512</td><td>up to 256 bits</td></tr>
+</table></div>
+<p><b>SHAKE128</b> and <b>SHAKE256</b> are extendable-output functions (XOFs): you choose how many bytes you want. NIST SP 800-185 builds more tools on the same core: cSHAKE, KMAC (a MAC), TupleHash and ParallelHash.</p>
+
+<h2>Where SHA-3 is used</h2>
+<ul>
+<li><b>Post-quantum cryptography.</b> The new NIST standards ML-KEM (FIPS 203) and ML-DSA (FIPS 204) use SHA3-256, SHA3-512, SHAKE128 and SHAKE256 internally, so SHA-3 is in the core of the next generation of public-key cryptography.</li>
+<li><b>Blockchains.</b> Ethereum uses Keccak-256 (the pre-standard version) for addresses, transaction hashes and storage. See <a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a>.</li>
+<li><b>Libraries and protocols.</b> SHA-3 is available in OpenSSL, the Python and Go standard libraries, Java, .NET, PHP and Node.js. See the <a href="/code-examples/">code examples</a>.</li>
+</ul>
+
+<h2>Example</h2>
+<p>SHA3-256("hello world"):</p>
+<pre><code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code></pre>
+<p>Try your own input in the <a href="/?q=hello%20world">calculator</a>.</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+
+</body>
+</html>

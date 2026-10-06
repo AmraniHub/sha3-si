@@ -1,0 +1,21 @@
+# sha3.si
+
+> Free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, plus explanations, comparisons, test vectors and code examples. The domain sha3.si itself is for sale.
+
+Key facts:
+- SHA-3 is standardised by NIST in FIPS 202 (August 2015) and based on Keccak (Bertoni, Daemen, Peeters, Van Assche).
+- It uses the sponge construction over the Keccak-f[1600] permutation (24 rounds, 1600-bit state).
+- SHA3-256 of "hello world" = 644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938
+- SHA3-256 of "" = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
+- Ethereum Keccak-256 differs from SHA3-256 only in padding (0x01 vs 0x06); Keccak-256 of "" = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
+
+## Pages
+- [SHA-3 calculator](https://sha3.si/): hash text, hex or files locally in the browser
+- [What is SHA-3](https://sha3.si/what-is-sha3/): history, sponge construction, family, uses
+- [SHA-3 vs SHA-256](https://sha3.si/sha3-vs-sha256/): design, security, speed, when to use which
+- [SHA-3 vs Keccak-256](https://sha3.si/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
+- [Test vectors](https://sha3.si/test-vectors/): known-answer digests for common inputs
+- [Code examples](https://sha3.si/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
+
+## Domain
+- [Buy sha3.si](https://sha3.si/buy/): the domain is available; listing at https://forsale.dynadot.com/sha3.si

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHA-3 code examples: Python, JavaScript, Go, Rust, Java, PHP, C#, OpenSSL | sha3.si</title>
+<meta name="description" content="How to compute SHA-3 (SHA3-256, SHA3-512, SHAKE) in Python, JavaScript, Node.js, Go, Rust, Java, PHP, C# and the OpenSSL command line.">
+<link rel="canonical" href="https://sha3.si/code-examples/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHA-3 code examples: Python, JavaScript, Go, Rust, Java, PHP, C#, OpenSSL | sha3.si">
+<meta property="og:description" content="How to compute SHA-3 (SHA3-256, SHA3-512, SHAKE) in Python, JavaScript, Node.js, Go, Rust, Java, PHP, C# and the OpenSSL command line.">
+<meta property="og:url" content="https://sha3.si/code-examples/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "SHA-3 code examples", "description": "How to compute SHA-3 (SHA3-256, SHA3-512, SHAKE) in Python, JavaScript, Node.js, Go, Rust, Java, PHP, C# and the OpenSSL command line.", "url": "https://sha3.si/code-examples/", "dateModified": "2026-10-06", "author": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "publisher": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "about": {"@type": "Thing", "name": "SHA-3", "sameAs": "https://en.wikipedia.org/wiki/SHA-3"}}</script>
+</head>
+<body>
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/">sha3<span>.si</span></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/" class=on>Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<article>
+<h1>SHA-3 code examples</h1>
+<p class="kicker">SHA3-256 of the string "hello world" in every common language. Every snippet should print <code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code>.</p>
+
+<h2>Python</h2>
+<pre><code>import hashlib
+
+print(hashlib.sha3_256(b&quot;hello world&quot;).hexdigest())
+print(hashlib.shake_256(b&quot;hello world&quot;).hexdigest(32))  # SHAKE256, 32-byte output</code></pre>
+
+<h2>Node.js</h2>
+<pre><code>import { createHash } from &quot;node:crypto&quot;;
+
+console.log(createHash(&quot;sha3-256&quot;).update(&quot;hello world&quot;).digest(&quot;hex&quot;));</code></pre>
+
+<h2>JavaScript in the browser</h2>
+<p>The Web Crypto API does not include SHA-3, so use a library such as js-sha3 (the one this site uses):</p>
+<pre><code>import { sha3_256, keccak256 } from &quot;js-sha3&quot;;
+
+sha3_256(&quot;hello world&quot;);   // NIST SHA3-256
+keccak256(&quot;hello world&quot;);  // Ethereum Keccak-256</code></pre>
+
+<h2>Go</h2>
+<pre><code>package main
+
+import (
+    &quot;crypto/sha3&quot; // Go 1.24+; older versions: golang.org/x/crypto/sha3
+    &quot;fmt&quot;
+)
+
+func main() {
+    fmt.Printf(&quot;%x&quot;, sha3.Sum256([]byte(&quot;hello world&quot;)))
+}</code></pre>
+
+<h2>Rust</h2>
+<pre><code>// Cargo.toml: sha3 = &quot;0.10&quot;, hex = &quot;0.4&quot;
+use sha3::{Digest, Sha3_256};
+
+fn main() {
+    let hash = Sha3_256::digest(b&quot;hello world&quot;);
+    println!(&quot;{}&quot;, hex::encode(hash));
+}</code></pre>
+
+<h2>Java</h2>
+<pre><code>import java.security.MessageDigest;
+import java.util.HexFormat;
+
+byte[] h = MessageDigest.getInstance(&quot;SHA3-256&quot;)
+        .digest(&quot;hello world&quot;.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+System.out.println(HexFormat.of().formatHex(h)); // Java 17+</code></pre>
+
+<h2>PHP</h2>
+<pre><code>&lt;?php
+echo hash(&#x27;sha3-256&#x27;, &#x27;hello world&#x27;);</code></pre>
+
+<h2>C# (.NET 8+)</h2>
+<pre><code>using System.Security.Cryptography;
+using System.Text;
+
+if (SHA3_256.IsSupported)
+{
+    byte[] h = SHA3_256.HashData(Encoding.UTF8.GetBytes(&quot;hello world&quot;));
+    Console.WriteLine(Convert.ToHexString(h).ToLowerInvariant());
+}</code></pre>
+
+<h2>OpenSSL command line</h2>
+<pre><code>printf &quot;hello world&quot; | openssl dgst -sha3-256
+openssl dgst -sha3-512 myfile.bin</code></pre>
+<p>Need Ethereum-compatible hashes instead? See <a href="/sha3-vs-keccak/">SHA-3 vs Keccak-256</a>.</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+
+</body>
+</html>

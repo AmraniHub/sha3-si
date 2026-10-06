@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHA-3 test vectors: SHA3-256, SHA3-512, SHAKE, Keccak-256 | sha3.si</title>
+<meta name="description" content="SHA-3 test vectors: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Keccak-256 digests for common inputs, to verify your implementation.">
+<link rel="canonical" href="https://sha3.si/test-vectors/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHA-3 test vectors: SHA3-256, SHA3-512, SHAKE, Keccak-256 | sha3.si">
+<meta property="og:description" content="SHA-3 test vectors: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Keccak-256 digests for common inputs, to verify your implementation.">
+<meta property="og:url" content="https://sha3.si/test-vectors/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "SHA-3 test vectors", "description": "SHA-3 test vectors: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Keccak-256 digests for common inputs, to verify your implementation.", "url": "https://sha3.si/test-vectors/", "dateModified": "2026-10-06", "author": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "publisher": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si"}, "about": {"@type": "Thing", "name": "SHA-3", "sameAs": "https://en.wikipedia.org/wiki/SHA-3"}}</script>
+</head>
+<body>
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/">sha3<span>.si</span></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/" class=on>Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<article>
+<h1>SHA-3 test vectors</h1>
+<p class="kicker">Known-answer digests for checking a SHA-3 implementation. Inputs are UTF-8 strings, outputs are lowercase hex. Generated with Python's hashlib (OpenSSL) and cross-checked against js-sha3.</p>
+<h3>"" (empty string)</h3><div class="tablewrap"><table><tr><td>SHA3-224</td><td class="mono"><code>6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7</code></td></tr><tr><td>SHA3-256</td><td class="mono"><code>a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</code></td></tr><tr><td>SHA3-384</td><td class="mono"><code>0c63a75b845e4f7d01107d852e4c2485c51a50aaaa94fc61995e71bbee983a2ac3713831264adb47fb6bd1e058d5f004</code></td></tr><tr><td>SHA3-512</td><td class="mono"><code>a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26</code></td></tr><tr><td>SHAKE128, 256-bit output</td><td class="mono"><code>7f9c2ba4e88f827d616045507605853ed73b8093f6efbc88eb1a6eacfa66ef26</code></td></tr><tr><td>SHAKE256, 512-bit output</td><td class="mono"><code>46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762fd75dc4ddd8c0f200cb05019d67b592f6fc821c49479ab48640292eacb3b7c4be</code></td></tr><tr><td>Keccak-256 (Ethereum)</td><td class="mono"><code>c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470</code></td></tr></table></div><h3>"abc"</h3><div class="tablewrap"><table><tr><td>SHA3-224</td><td class="mono"><code>e642824c3f8cf24ad09234ee7d3c766fc9a3a5168d0c94ad73b46fdf</code></td></tr><tr><td>SHA3-256</td><td class="mono"><code>3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532</code></td></tr><tr><td>SHA3-384</td><td class="mono"><code>ec01498288516fc926459f58e2c6ad8df9b473cb0fc08c2596da7cf0e49be4b298d88cea927ac7f539f1edf228376d25</code></td></tr><tr><td>SHA3-512</td><td class="mono"><code>b751850b1a57168a5693cd924b6b096e08f621827444f70d884f5d0240d2712e10e116e9192af3c91a7ec57647e3934057340b4cf408d5a56592f8274eec53f0</code></td></tr><tr><td>SHAKE128, 256-bit output</td><td class="mono"><code>5881092dd818bf5cf8a3ddb793fbcba74097d5c526a6d35f97b83351940f2cc8</code></td></tr><tr><td>SHAKE256, 512-bit output</td><td class="mono"><code>483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739d5a15bef186a5386c75744c0527e1faa9f8726e462a12a4feb06bd8801e751e4</code></td></tr><tr><td>Keccak-256 (Ethereum)</td><td class="mono"><code>4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45</code></td></tr></table></div><h3>"hello world"</h3><div class="tablewrap"><table><tr><td>SHA3-224</td><td class="mono"><code>dfb7f18c77e928bb56faeb2da27291bd790bc1045cde45f3210bb6c5</code></td></tr><tr><td>SHA3-256</td><td class="mono"><code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code></td></tr><tr><td>SHA3-384</td><td class="mono"><code>83bff28dde1b1bf5810071c6643c08e5b05bdb836effd70b403ea8ea0a634dc4997eb1053aa3593f590f9c63630dd90b</code></td></tr><tr><td>SHA3-512</td><td class="mono"><code>840006653e9ac9e95117a15c915caab81662918e925de9e004f774ff82d7079a40d4d27b1b372657c61d46d470304c88c788b3a4527ad074d1dccbee5dbaa99a</code></td></tr><tr><td>SHAKE128, 256-bit output</td><td class="mono"><code>3a9159f071e4dd1c8c4f968607c30942e120d8156b8b1e72e0d376e8871cb8b8</code></td></tr><tr><td>SHAKE256, 512-bit output</td><td class="mono"><code>369771bb2cb9d2b04c1d54cca487e372d9f187f73f7ba3f65b95c8ee7798c527f4f3c2d55c2d46a29f2e945d469c3df27853a8735271f5cc2d9e889544357116</code></td></tr><tr><td>Keccak-256 (Ethereum)</td><td class="mono"><code>47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad</code></td></tr></table></div><h3>"The quick brown fox jumps over the lazy dog"</h3><div class="tablewrap"><table><tr><td>SHA3-224</td><td class="mono"><code>d15dadceaa4d5d7bb3b48f446421d542e08ad8887305e28d58335795</code></td></tr><tr><td>SHA3-256</td><td class="mono"><code>69070dda01975c8c120c3aada1b282394e7f032fa9cf32f4cb2259a0897dfc04</code></td></tr><tr><td>SHA3-384</td><td class="mono"><code>7063465e08a93bce31cd89d2e3ca8f602498696e253592ed26f07bf7e703cf328581e1471a7ba7ab119b1a9ebdf8be41</code></td></tr><tr><td>SHA3-512</td><td class="mono"><code>01dedd5de4ef14642445ba5f5b97c15e47b9ad931326e4b0727cd94cefc44fff23f07bf543139939b49128caf436dc1bdee54fcb24023a08d9403f9b4bf0d450</code></td></tr><tr><td>SHAKE128, 256-bit output</td><td class="mono"><code>f4202e3c5852f9182a0430fd8144f0a74b95e7417ecae17db0f8cfeed0e3e66e</code></td></tr><tr><td>SHAKE256, 512-bit output</td><td class="mono"><code>2f671343d9b2e1604dc9dcf0753e5fe15c7c64a0d283cbbf722d411a0e36f6ca1d01d1369a23539cd80f7c054b6e5daf9c962cad5b8ed5bd11998b40d5734442</code></td></tr><tr><td>Keccak-256 (Ethereum)</td><td class="mono"><code>4d741b6f1eb29cb2a9b9911c82f56fa8d73b04959d3d9d222895df6c0b28aa15</code></td></tr></table></div>
+<p>For the full official set, see the NIST Cryptographic Algorithm Validation Program (CAVP) SHA-3 test vectors.</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+
+</body>
+</html>
