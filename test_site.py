@@ -63,7 +63,7 @@ with sync_playwright() as p:
     m.on('pageerror', lambda e: errors.append(str(e)))
     # /404.html directly: python's test server does not serve it for missing
     # paths, but GitHub Pages does.
-    for path in ['/sha3-256/', '/sha3-512/', '/keccak-256/', '/shake256/', '/', '/what-is-sha3/', '/sha3-vs-sha256/', '/sha3-vs-keccak/', '/test-vectors/', '/code-examples/', '/buy/', '/404.html']:
+    for path in ['/quantum-safe/', '/sha3-256/', '/sha3-512/', '/keccak-256/', '/shake256/', '/', '/what-is-sha3/', '/sha3-vs-sha256/', '/sha3-vs-keccak/', '/test-vectors/', '/code-examples/', '/buy/', '/404.html']:
         r = m.goto(base + path)
         sw = m.evaluate('document.documentElement.scrollWidth')
         check(sw <= 375, f'{path} fits 375px (scrollWidth {sw})')

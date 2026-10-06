@@ -16,6 +16,7 @@ Key facts:
 - [SHA-3 vs Keccak-256](https://sha3.si/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
 - [Test vectors](https://sha3.si/test-vectors/): known-answer digests for common inputs
 - [Code examples](https://sha3.si/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
+- [Is your website quantum-safe?](https://sha3.si/quantum-safe/): free check whether a site accepts post-quantum key exchange (ML-KEM, X25519MLKEM768)
 - [SHA3-256 calculator](https://sha3.si/sha3-256/), [SHA3-512 calculator](https://sha3.si/sha3-512/), [Keccak-256 / Ethereum calculator](https://sha3.si/keccak-256/), [SHAKE256 calculator](https://sha3.si/shake256/)
 
 ## Domain

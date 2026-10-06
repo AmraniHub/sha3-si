@@ -47,13 +47,16 @@ HW = V['hello world']
 # ---------------------------------------------------------------- layout
 NAV = [
     ('/', 'Calculator'),
+    ('/quantum-safe/', 'Quantum-safe check'),
     ('/what-is-sha3/', 'What is SHA-3'),
-    ('/sha3-vs-sha256/', 'SHA-3 vs SHA-256'),
     ('/sha3-vs-keccak/', 'SHA-3 vs Keccak'),
-    ('/test-vectors/', 'Test vectors'),
     ('/code-examples/', 'Code'),
     ('/buy/', 'Buy this domain'),
 ]
+GUIDES = [('/sha3-vs-sha256/', 'SHA-3 vs SHA-256'), ('/test-vectors/', 'Test vectors'),
+          ('/what-is-sha3/', 'What is SHA-3'), ('/sha3-vs-keccak/', 'SHA-3 vs Keccak')]
+# The checker service (checker/ in this repo), deployed on Railway.
+CHECKER_URL = 'https://checker-production-c609.up.railway.app'
 
 def ga():
     if not GA_ID:
@@ -123,7 +126,8 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 </main>
 <footer><div class="wrap">
 <span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
-<span>Calculators: {tools}</span>
+<span>Calculators: {tools} &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: {' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in GUIDES)}</span>
 <span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
 </div></footer>
 {scripts}
@@ -206,6 +210,11 @@ PAGES['/'] = page('/', 'SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE,
 <p class="note">Check: SHA3-256("hello world") = <code>{HW['sha3_256']}</code>. More in the <a href="/test-vectors/">test vectors</a>.</p>
 
 {buybox()}
+
+<a class="card" href="/quantum-safe/" style="margin:24px 0;border-color:var(--accent)">
+<b>New: is your website quantum-safe?</b>
+<span>Check in seconds whether a site accepts post-quantum key exchange (ML-KEM), the NIST standard built on SHA-3. &rarr;</span>
+</a>
 
 <h2>Dedicated calculators</h2>
 <div class="cards">
@@ -629,6 +638,72 @@ for a in ALGO_PAGES:
         scripts=CALC_JS, focus=a['focus'])
 
 
+# Quantum-safety checker page (front end; the work happens in checker/).
+p = '/quantum-safe/'
+d = ('Is your website quantum-safe? Free check: does your server accept post-quantum key exchange (ML-KEM, '
+     'X25519MLKEM768)? TLS version, certificate and how to fix it, in seconds.')
+qs_faq = [
+    ('What does "quantum-safe" mean for a website?',
+     'That the key exchange protecting its HTTPS traffic uses post-quantum cryptography (ML-KEM, FIPS 203), usually as the '
+     'hybrid X25519MLKEM768. Traffic recorded today then cannot be decrypted later by a quantum computer.'),
+    ('Why does it matter now if quantum computers cannot break encryption yet?',
+     'Because of harvest now, decrypt later: encrypted traffic can be recorded today and decrypted once a large quantum '
+     'computer exists. Data that must stay secret for years needs post-quantum protection already.'),
+    ('Why is my certificate still classical?',
+     'Public certificate authorities do not issue post-quantum (ML-DSA) certificates yet. Key exchange is the part to fix '
+     'first, because it protects recorded traffic; signatures only need to be quantum-safe once quantum computers exist.'),
+    ('Is the check safe for my server?',
+     'Yes. It opens two ordinary HTTPS handshakes on port 443, like a browser visiting your homepage, and sends no requests '
+     'beyond that. Results are cached for ten minutes and the site you check is not stored.'),
+    ('How do I enable post-quantum key exchange?',
+     'Cloudflare enables it by default. Go 1.24+ servers and Caddy built with Go 1.24+ also do. With nginx or Apache, build '
+     'against OpenSSL 3.5 or later and put X25519MLKEM768 first in the key-exchange groups.'),
+]
+PAGES[p] = page(p, 'Is your website quantum-safe? Free post-quantum TLS check (ML-KEM) | sha3.si', d, f"""
+<section class="hero">
+<h1>Is your website quantum-safe?</h1>
+<p class="lead">Check whether a site accepts post-quantum key exchange (ML-KEM, the NIST FIPS 203 standard) and protects its traffic against harvest-now, decrypt-later attacks. Free, in seconds.</p>
+</section>
+
+<section class="panel">
+<form id="qs-form" class="qs-form" data-api="{CHECKER_URL}" autocomplete="off">
+<label for="qs-host" class="hidden">Website</label>
+<input id="qs-host" type="text" inputmode="url" spellcheck="false" placeholder="example.com" required>
+<button id="qs-go" class="btn primary" type="submit">Check</button>
+</form>
+<p class="note">Try: <a href="#" data-try="cloudflare.com">cloudflare.com</a> &middot; <a href="#" data-try="google.com">google.com</a> &middot; <a href="#" data-try="github.com">github.com</a></p>
+</section>
+<section id="qs-out" aria-live="polite"></section>
+
+<article>
+<h2>Why this matters</h2>
+<p>Almost every HTTPS connection today agrees its keys with elliptic curves (X25519, P-256) or RSA. A large quantum computer running Shor's algorithm would break both. Nobody has one yet, but traffic can be <b>recorded now and decrypted later</b>, so data that must stay confidential for years is already at risk.</p>
+<p>That is why NIST published the post-quantum standards <b>ML-KEM</b> (FIPS 203) and <b>ML-DSA</b> (FIPS 204) in 2024, and why governments have set migration timelines: NIST plans to deprecate today's public-key algorithms by 2030 and disallow them by 2035, and the UK and EU have published roadmaps aiming at 2030 to 2035 for critical systems.</p>
+
+<h2>What this check tests</h2>
+<div class="tablewrap"><table>
+<tr><th>Test</th><th>How</th><th>Why</th></tr>
+<tr><td><b>Post-quantum key exchange</b></td><td>We open a TLS 1.3 handshake offering <b>only</b> the hybrid group X25519MLKEM768. If the server completes it, it supports ML-KEM.</td><td>This is the part that protects recorded traffic. 2 points.</td></tr>
+<tr><td>TLS 1.3</td><td>A normal handshake: which version does the server choose?</td><td>Post-quantum key exchange exists only in TLS 1.3. 1 point.</td></tr>
+<tr><td>Certificate</td><td>Key type, signature, issuer, expiry and validity.</td><td>Shown for information. Post-quantum certificates are not issued by public CAs yet.</td></tr>
+</table></div>
+<p>X25519MLKEM768 combines classical X25519 with ML-KEM-768. An attacker would have to break <b>both</b>, so it is at least as strong as today's encryption, and safe against quantum computers. Chrome, Firefox, Safari and Edge already offer it.</p>
+
+<h2>Where SHA-3 comes in</h2>
+<p>ML-KEM is built on SHA-3: it uses <a href="/sha3-256/">SHA3-256</a>, <a href="/sha3-512/">SHA3-512</a>, SHAKE128 and <a href="/shake256/">SHAKE256</a> internally. Every post-quantum handshake this page detects runs SHA-3 under the hood.</p>
+
+<h2>Frequently asked</h2>
+{''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(a)}</p>' for q, a in qs_faq)}
+{buybox()}
+</article>
+""", schema=[{'@context': 'https://schema.org', '@type': 'WebApplication',
+              'name': 'Quantum-safe website check (post-quantum TLS)', 'url': DOMAIN + p,
+              'applicationCategory': 'SecurityApplication', 'operatingSystem': 'Any (web browser)',
+              'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'description': d},
+             faq_schema(qs_faq)],
+    scripts='<script src="/assets/qs.js"></script>')
+
+
 # Buy page: written for the person deciding whether to buy, not for search.
 p = '/buy/'
 d = ('sha3.si is for sale: a short exact-match domain for SHA-3, the NIST cryptographic hash standard, with a working '
@@ -663,7 +738,8 @@ PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
 <li><b>Rising with post-quantum migration.</b> SHA3-256, SHA3-512, SHAKE128 and SHAKE256 sit inside ML-KEM and ML-DSA, the post-quantum standards that governments and companies must now adopt. Interest in SHA-3 grows with every migration plan.</li>
 <li><b>Two markets in one word.</b> NIST SHA-3 for security and compliance, and Keccak (its original form) for Ethereum and every EVM chain.</li>
 <li><b>.si reads as "super intelligence".</b> The extension carries the 2026 "SI" naming for AI, which adds a second, AI-security reading to the name.</li>
-<li><b>Not an empty name.</b> It comes with a live, fast, private SHA-3 calculator, four dedicated tools and reference pages, already indexed by search engines.</li>
+<li><b>Not an empty name.</b> It comes with a live <a href="/quantum-safe/">quantum-safety checker</a> (does a website accept post-quantum ML-KEM key exchange?), a private SHA-3 calculator, four dedicated tools and reference pages, already submitted to search engines.</li>
+<li><b>A ready lead source for post-quantum vendors.</b> Everyone who runs the checker is someone asking whether their systems are quantum-safe, exactly the audience post-quantum, PKI and HSM companies pay to reach.</li>
 </ul>
 
 <h2>Who it is for</h2>
@@ -681,6 +757,7 @@ PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
 <h2>What you get</h2>
 <ul>
 <li>The domain <b>sha3.si</b>, moved to your account after payment.</li>
+<li>The quantum-safety checker: the web page and the checker service (Go, open source), ready to move to your hosting.</li>
 <li>The current website: a SHA-3 calculator (SHA3-224/256/384/512, SHAKE128/256, Keccak-256, text and files), dedicated tool pages, guides, test vectors and code examples, all static and fast.</li>
 <li>Its search presence: pages submitted to Google and Bing, with structured data, a sitemap and an llms.txt for AI assistants.</li>
 </ul>
@@ -754,6 +831,7 @@ Key facts:
 - [SHA-3 vs Keccak-256]({DOMAIN}/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
 - [Test vectors]({DOMAIN}/test-vectors/): known-answer digests for common inputs
 - [Code examples]({DOMAIN}/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
+- [Is your website quantum-safe?]({DOMAIN}/quantum-safe/): free check whether a site accepts post-quantum key exchange (ML-KEM, X25519MLKEM768)
 - [SHA3-256 calculator]({DOMAIN}/sha3-256/), [SHA3-512 calculator]({DOMAIN}/sha3-512/), [Keccak-256 / Ethereum calculator]({DOMAIN}/keccak-256/), [SHAKE256 calculator]({DOMAIN}/shake256/)
 
 ## Domain

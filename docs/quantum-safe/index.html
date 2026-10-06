@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is your website quantum-safe? Free post-quantum TLS check (ML-KEM) | sha3.si</title>
+<meta name="description" content="Is your website quantum-safe? Free check: does your server accept post-quantum key exchange (ML-KEM, X25519MLKEM768)? TLS version, certificate and how to fix it, in seconds.">
+<link rel="canonical" href="https://sha3.si/quantum-safe/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="Is your website quantum-safe? Free post-quantum TLS check (ML-KEM) | sha3.si">
+<meta property="og:description" content="Is your website quantum-safe? Free check: does your server accept post-quantum key exchange (ML-KEM, X25519MLKEM768)? TLS version, certificate and how to fix it, in seconds.">
+<meta property="og:url" content="https://sha3.si/quantum-safe/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Quantum-safe website check (post-quantum TLS)", "url": "https://sha3.si/quantum-safe/", "applicationCategory": "SecurityApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Is your website quantum-safe? Free check: does your server accept post-quantum key exchange (ML-KEM, X25519MLKEM768)? TLS version, certificate and how to fix it, in seconds."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does \"quantum-safe\" mean for a website?", "acceptedAnswer": {"@type": "Answer", "text": "That the key exchange protecting its HTTPS traffic uses post-quantum cryptography (ML-KEM, FIPS 203), usually as the hybrid X25519MLKEM768. Traffic recorded today then cannot be decrypted later by a quantum computer."}}, {"@type": "Question", "name": "Why does it matter now if quantum computers cannot break encryption yet?", "acceptedAnswer": {"@type": "Answer", "text": "Because of harvest now, decrypt later: encrypted traffic can be recorded today and decrypted once a large quantum computer exists. Data that must stay secret for years needs post-quantum protection already."}}, {"@type": "Question", "name": "Why is my certificate still classical?", "acceptedAnswer": {"@type": "Answer", "text": "Public certificate authorities do not issue post-quantum (ML-DSA) certificates yet. Key exchange is the part to fix first, because it protects recorded traffic; signatures only need to be quantum-safe once quantum computers exist."}}, {"@type": "Question", "name": "Is the check safe for my server?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It opens two ordinary HTTPS handshakes on port 443, like a browser visiting your homepage, and sends no requests beyond that. Results are cached for ten minutes and the site you check is not stored."}}, {"@type": "Question", "name": "How do I enable post-quantum key exchange?", "acceptedAnswer": {"@type": "Answer", "text": "Cloudflare enables it by default. Go 1.24+ servers and Caddy built with Go 1.24+ also do. With nginx or Apache, build against OpenSSL 3.5 or later and put X25519MLKEM768 first in the key-exchange groups."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "Is your website quantum-safe? Free post-quantum TLS check (ML-KEM)", "item": "https://sha3.si/quantum-safe/"}]}</script>
+</head>
+<body>
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">Calculator</a><a href="/quantum-safe/" class=on>Quantum-safe check</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>Is your website quantum-safe?</h1>
+<p class="lead">Check whether a site accepts post-quantum key exchange (ML-KEM, the NIST FIPS 203 standard) and protects its traffic against harvest-now, decrypt-later attacks. Free, in seconds.</p>
+</section>
+
+<section class="panel">
+<form id="qs-form" class="qs-form" data-api="https://checker-production-c609.up.railway.app" autocomplete="off">
+<label for="qs-host" class="hidden">Website</label>
+<input id="qs-host" type="text" inputmode="url" spellcheck="false" placeholder="example.com" required>
+<button id="qs-go" class="btn primary" type="submit">Check</button>
+</form>
+<p class="note">Try: <a href="#" data-try="cloudflare.com">cloudflare.com</a> &middot; <a href="#" data-try="google.com">google.com</a> &middot; <a href="#" data-try="github.com">github.com</a></p>
+</section>
+<section id="qs-out" aria-live="polite"></section>
+
+<article>
+<h2>Why this matters</h2>
+<p>Almost every HTTPS connection today agrees its keys with elliptic curves (X25519, P-256) or RSA. A large quantum computer running Shor's algorithm would break both. Nobody has one yet, but traffic can be <b>recorded now and decrypted later</b>, so data that must stay confidential for years is already at risk.</p>
+<p>That is why NIST published the post-quantum standards <b>ML-KEM</b> (FIPS 203) and <b>ML-DSA</b> (FIPS 204) in 2024, and why governments have set migration timelines: NIST plans to deprecate today's public-key algorithms by 2030 and disallow them by 2035, and the UK and EU have published roadmaps aiming at 2030 to 2035 for critical systems.</p>
+
+<h2>What this check tests</h2>
+<div class="tablewrap"><table>
+<tr><th>Test</th><th>How</th><th>Why</th></tr>
+<tr><td><b>Post-quantum key exchange</b></td><td>We open a TLS 1.3 handshake offering <b>only</b> the hybrid group X25519MLKEM768. If the server completes it, it supports ML-KEM.</td><td>This is the part that protects recorded traffic. 2 points.</td></tr>
+<tr><td>TLS 1.3</td><td>A normal handshake: which version does the server choose?</td><td>Post-quantum key exchange exists only in TLS 1.3. 1 point.</td></tr>
+<tr><td>Certificate</td><td>Key type, signature, issuer, expiry and validity.</td><td>Shown for information. Post-quantum certificates are not issued by public CAs yet.</td></tr>
+</table></div>
+<p>X25519MLKEM768 combines classical X25519 with ML-KEM-768. An attacker would have to break <b>both</b>, so it is at least as strong as today's encryption, and safe against quantum computers. Chrome, Firefox, Safari and Edge already offer it.</p>
+
+<h2>Where SHA-3 comes in</h2>
+<p>ML-KEM is built on SHA-3: it uses <a href="/sha3-256/">SHA3-256</a>, <a href="/sha3-512/">SHA3-512</a>, SHAKE128 and <a href="/shake256/">SHAKE256</a> internally. Every post-quantum handshake this page detects runs SHA-3 under the hood.</p>
+
+<h2>Frequently asked</h2>
+<h3>What does &quot;quantum-safe&quot; mean for a website?</h3><p>That the key exchange protecting its HTTPS traffic uses post-quantum cryptography (ML-KEM, FIPS 203), usually as the hybrid X25519MLKEM768. Traffic recorded today then cannot be decrypted later by a quantum computer.</p><h3>Why does it matter now if quantum computers cannot break encryption yet?</h3><p>Because of harvest now, decrypt later: encrypted traffic can be recorded today and decrypted once a large quantum computer exists. Data that must stay secret for years needs post-quantum protection already.</p><h3>Why is my certificate still classical?</h3><p>Public certificate authorities do not issue post-quantum (ML-DSA) certificates yet. Key exchange is the part to fix first, because it protects recorded traffic; signatures only need to be quantum-safe once quantum computers exist.</p><h3>Is the check safe for my server?</h3><p>Yes. It opens two ordinary HTTPS handshakes on port 443, like a browser visiting your homepage, and sends no requests beyond that. Results are cached for ten minutes and the site you check is not stored.</p><h3>How do I enable post-quantum key exchange?</h3><p>Cloudflare enables it by default. Go 1.24+ servers and Caddy built with Go 1.24+ also do. With nginx or Apache, build against OpenSSL 3.5 or later and put X25519MLKEM768 first in the key-exchange groups.</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a> &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: <a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a> &middot; <a href="/test-vectors/">Test vectors</a> &middot; <a href="/what-is-sha3/">What is SHA-3</a> &middot; <a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a></span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/qs.js"></script>
+</body>
+</html>

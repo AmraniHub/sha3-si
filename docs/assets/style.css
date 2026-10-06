@@ -156,5 +156,36 @@ td.mono, td code { word-break: break-all; }
 .buy p { margin: 0 0 14px; color: var(--muted); }
 .buy .btn { display: inline-block; text-decoration: none; margin: 4px 8px 4px 0; }
 
+/* quantum-safe checker */
+.qs-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.qs-form input {
+  flex: 1 1 240px; min-width: 0; background: var(--bg); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font: 17px var(--mono);
+}
+.qs-form .btn { padding: 12px 22px; font-size: 16px; }
+.qs-form .btn:disabled { opacity: .6; cursor: progress; }
+.qs-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; margin: 20px 0; }
+.qs-head { border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+.qs-head.good { background: color-mix(in srgb, var(--accent) 16%, var(--panel)); border: 1px solid var(--accent); }
+.qs-head.bad { background: color-mix(in srgb, #e5534b 14%, var(--panel)); border: 1px solid #e5534b; }
+.qs-head h2 { margin: 6px 0 2px; font: 700 22px var(--mono); word-break: break-all; }
+.qs-badge { display: inline-block; font: 800 12px var(--sans); letter-spacing: .08em; padding: 3px 8px; border-radius: 5px; }
+.qs-head.good .qs-badge { background: var(--accent); color: var(--accent-ink); }
+.qs-head.bad .qs-badge { background: #e5534b; color: #fff; }
+.qs-score { color: var(--muted); font-size: 14px; }
+.qs-verdict { font-size: 16px; }
+.qs-list { display: grid; gap: 8px; margin: 12px 0; }
+.qs-row { display: flex; gap: 10px; align-items: flex-start; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.qs-mark { flex: 0 0 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 13px; background: var(--line); color: var(--text); }
+.qs-row.good .qs-mark { background: var(--accent); color: var(--accent-ink); }
+.qs-row.bad .qs-mark { background: #e5534b; color: #fff; }
+.qs-row.warn .qs-mark { background: var(--warn); color: #1f2328; }
+.qs-text b { display: block; font-size: 14px; }
+.qs-text span { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+.qs-advice li { margin-bottom: 6px; }
+.qs-share { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.qs-share .btn { text-decoration: none; }
+.qs-error { color: #e5534b; }
+
 footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0 40px; font-size: 13px; color: var(--muted); }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
