@@ -51,8 +51,11 @@ code, pre, .mono { font-family: var(--mono); }
 /* header */
 header.top { border-bottom: 1px solid var(--line); }
 header.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 60px; flex-wrap: wrap; }
-.logo { font: 700 20px/1 var(--mono); color: var(--text); letter-spacing: -.02em; }
+.logo { display: inline-flex; align-items: center; gap: 9px; font: 700 20px/1 var(--mono); color: var(--text); letter-spacing: -.02em; }
+.logo:hover { text-decoration: none; }
+.logo .mark { flex: 0 0 auto; border-radius: 7px; }
 .logo span { color: var(--accent); }
+.row.focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 nav.main { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; margin-left: auto; }
 nav.main a { color: var(--muted); }
 nav.main a:hover, nav.main a.on { color: var(--text); text-decoration: none; }

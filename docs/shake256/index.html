@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHAKE256 Online: extendable-output SHA-3 calculator | sha3.si</title>
+<meta name="description" content="Free online SHAKE256 and SHAKE128 calculator. Choose any output length and hash text, hex or files in your browser.">
+<link rel="canonical" href="https://sha3.si/shake256/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHAKE256 Online: extendable-output SHA-3 calculator | sha3.si">
+<meta property="og:description" content="Free online SHAKE256 and SHAKE128 calculator. Choose any output length and hash text, hex or files in your browser.">
+<meta property="og:url" content="https://sha3.si/shake256/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "SHAKE256 hash calculator", "url": "https://sha3.si/shake256/", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online SHAKE256 and SHAKE128 calculator. Choose any output length and hash text, hex or files in your browser."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the SHAKE256 calculator private?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The hash is computed in your browser; nothing you type or drop is uploaded."}}, {"@type": "Question", "name": "What is the SHAKE256 of an empty string?", "acceptedAnswer": {"@type": "Answer", "text": "SHAKE256 with a 512-bit output of \"\" = 46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762fd75dc4ddd8c0f200cb05019d67b592f6fc821c49479ab48640292eacb3b7c4be"}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "SHAKE256 Online", "item": "https://sha3.si/shake256/"}]}</script>
+</head>
+<body data-focus="shake256">
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>SHAKE256 hash calculator</h1>
+<p class="lead">SHAKE256 is an extendable-output function (XOF) from the SHA-3 family: instead of a fixed digest, you ask for exactly as many bits as you need, with up to 256-bit security.</p>
+</section>
+<section class="panel" aria-label="SHA-3 calculator">
+<div class="tabs">
+<button type="button" data-tab="text" class="on">Text</button>
+<button type="button" data-tab="file">File</button>
+</div>
+<div id="pane-text">
+<textarea id="in" spellcheck="false" aria-label="Input to hash">hello world</textarea>
+</div>
+<div id="pane-file" class="hidden">
+<div id="drop" class="drop">Drop a file here, or click to choose one.<br><small>The file is read in your browser and never uploaded.</small></div>
+<input id="file" type="file" class="hidden">
+<div class="note" id="fileinfo"></div>
+</div>
+<div class="opts">
+<label>Input <select id="mode"><option value="text">UTF-8 text</option><option value="hex">Hex bytes</option></select></label>
+<label>Output <select id="fmt"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select></label>
+<label>SHAKE length <input id="xoflen" type="number" min="8" max="8192" step="8" value="256"> bits</label>
+</div>
+<div class="note" id="err" role="alert"></div>
+</section>
+<section class="results" id="results" aria-live="polite"></section>
+<article>
+<h2>SHAKE256 at a glance</h2>
+<div class="tablewrap"><table><tr><th>Output</th><td>any length you choose</td></tr><tr><th>Rate / capacity</th><td>1088 / 512 bits</td></tr><tr><th>Security</th><td>up to 256 bits (collision: min(d/2, 256))</td></tr><tr><th>Standard</th><td>NIST FIPS 202 (2015)</td></tr><tr><th>Sibling</th><td>SHAKE128: rate 1344, up to 128-bit security</td></tr></table></div>
+<h2>Where it is used</h2>
+<p>SHAKE256 is used in Ed448 signatures (RFC 8032), in ML-DSA and ML-KEM, and in the SHAKE variants of SLH-DSA. Set the output length above to the size your protocol needs.</p>
+<h2>Known answers</h2>
+<p>SHAKE256 with a 512-bit output:</p>
+<div class="tablewrap"><table><tr><th>Input</th><th>Digest (hex)</th></tr><tr><td>&quot;&quot; (empty)</td><td class="mono"><code>46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762fd75dc4ddd8c0f200cb05019d67b592f6fc821c49479ab48640292eacb3b7c4be</code></td></tr><tr><td>&quot;abc&quot;</td><td class="mono"><code>483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739d5a15bef186a5386c75744c0527e1faa9f8726e462a12a4feb06bd8801e751e4</code></td></tr><tr><td>&quot;hello world&quot;</td><td class="mono"><code>369771bb2cb9d2b04c1d54cca487e372d9f187f73f7ba3f65b95c8ee7798c527f4f3c2d55c2d46a29f2e945d469c3df27853a8735271f5cc2d9e889544357116</code></td></tr></table></div>
+<h2>In code</h2>
+<pre><code>import hashlib
+hashlib.shake_256(b&quot;hello world&quot;).hexdigest(64)  # 64 bytes = 512 bits</code></pre>
+<p>More languages: <a href="/code-examples/">SHA-3 code examples</a>. Other calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a>.</p>
+<h2>Frequently asked</h2>
+<h3>Is the SHAKE256 calculator private?</h3><p>Yes. The hash is computed in your browser; nothing you type or drop is uploaded.</p><h3>What is the SHAKE256 of an empty string?</h3><p>SHAKE256 with a 512-bit output of &quot;&quot; = 46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762fd75dc4ddd8c0f200cb05019d67b592f6fc821c49479ab48640292eacb3b7c4be</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a></span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>
+</body>
+</html>

@@ -11,15 +11,24 @@
 <meta property="og:title" content="SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE, Keccak | sha3.si">
 <meta property="og:description" content="Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser.">
 <meta property="og:url" content="https://sha3.si/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/style.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "sha3.si SHA-3 hash calculator", "url": "https://sha3.si/", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my input sent to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Every hash on sha3.si is computed in your browser with JavaScript. Text and files never leave your device."}}, {"@type": "Question", "name": "What is the SHA3-256 hash of an empty string?", "acceptedAnswer": {"@type": "Answer", "text": "SHA3-256('') = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"}}, {"@type": "Question", "name": "Why does my Ethereum keccak256 not match SHA3-256?", "acceptedAnswer": {"@type": "Answer", "text": "Ethereum uses the original Keccak padding, which differs from the final NIST SHA-3 standard (FIPS 202). Same permutation, different padding byte, completely different output. Use the Keccak-256 row for Ethereum."}}, {"@type": "Question", "name": "What is SHAKE?", "acceptedAnswer": {"@type": "Answer", "text": "SHAKE128 and SHAKE256 are the extendable-output functions (XOFs) of the SHA-3 family: you choose the output length."}}]}</script>
 </head>
 <body>
 <div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
 <header class="top"><div class="wrap">
-<a class="logo" href="/">sha3<span>.si</span></a>
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
 <nav class="main"><a href="/" class=on>Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
 </div></header>
 <main class="wrap">
@@ -61,6 +70,14 @@
 <a class="btn" href="/buy/">Why this name</a>
 </div>
 
+<h2>Dedicated calculators</h2>
+<div class="cards">
+<a class="card" href="/sha3-256/"><b>SHA3-256</b><span>The most used SHA-3 size, 256-bit digest.</span></a>
+<a class="card" href="/sha3-512/"><b>SHA3-512</b><span>Largest fixed digest, widest security margin.</span></a>
+<a class="card" href="/keccak-256/"><b>Keccak-256</b><span>Ethereum and Solidity keccak256, function selectors.</span></a>
+<a class="card" href="/shake256/"><b>SHAKE256</b><span>Extendable output: any length you need.</span></a>
+</div>
+
 <h2>Learn SHA-3</h2>
 <div class="cards">
 <a class="card" href="/what-is-sha3/"><b>What is SHA-3?</b><span>Keccak, the sponge construction and FIPS 202, explained.</span></a>
@@ -75,6 +92,7 @@
 </main>
 <footer><div class="wrap">
 <span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a></span>
 <span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
 </div></footer>
 <script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>

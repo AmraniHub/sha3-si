@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keccak-256 Hash Online: Ethereum keccak256 calculator | sha3.si</title>
+<meta name="description" content="Free online Keccak-256 hash calculator, compatible with Ethereum and Solidity keccak256. Compute function selectors and hashes in your browser.">
+<link rel="canonical" href="https://sha3.si/keccak-256/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="Keccak-256 Hash Online: Ethereum keccak256 calculator | sha3.si">
+<meta property="og:description" content="Free online Keccak-256 hash calculator, compatible with Ethereum and Solidity keccak256. Compute function selectors and hashes in your browser.">
+<meta property="og:url" content="https://sha3.si/keccak-256/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Keccak-256 hash calculator", "url": "https://sha3.si/keccak-256/", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online Keccak-256 hash calculator, compatible with Ethereum and Solidity keccak256. Compute function selectors and hashes in your browser."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the Keccak-256 calculator private?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The hash is computed in your browser; nothing you type or drop is uploaded."}}, {"@type": "Question", "name": "What is the Keccak-256 of an empty string?", "acceptedAnswer": {"@type": "Answer", "text": "Keccak-256 of \"\" = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "Keccak-256 Hash Online", "item": "https://sha3.si/keccak-256/"}]}</script>
+</head>
+<body data-focus="keccak256">
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>Keccak-256 hash calculator</h1>
+<p class="lead">Keccak-256 is the original Keccak submission with a 256-bit output, before NIST changed the padding for SHA-3. Ethereum and every EVM chain use it, which is why it gives different results from SHA3-256.</p>
+</section>
+<section class="panel" aria-label="SHA-3 calculator">
+<div class="tabs">
+<button type="button" data-tab="text" class="on">Text</button>
+<button type="button" data-tab="file">File</button>
+</div>
+<div id="pane-text">
+<textarea id="in" spellcheck="false" aria-label="Input to hash">transfer(address,uint256)</textarea>
+</div>
+<div id="pane-file" class="hidden">
+<div id="drop" class="drop">Drop a file here, or click to choose one.<br><small>The file is read in your browser and never uploaded.</small></div>
+<input id="file" type="file" class="hidden">
+<div class="note" id="fileinfo"></div>
+</div>
+<div class="opts">
+<label>Input <select id="mode"><option value="text">UTF-8 text</option><option value="hex">Hex bytes</option></select></label>
+<label>Output <select id="fmt"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select></label>
+<label>SHAKE length <input id="xoflen" type="number" min="8" max="8192" step="8" value="256"> bits</label>
+</div>
+<div class="note" id="err" role="alert"></div>
+</section>
+<section class="results" id="results" aria-live="polite"></section>
+<article>
+<h2>Keccak-256 at a glance</h2>
+<div class="tablewrap"><table><tr><th>Output</th><td>256 bits</td></tr><tr><th>Padding byte</th><td>0x01 (SHA3-256 uses 0x06)</td></tr><tr><th>Used by</th><td>Ethereum, Solidity keccak256(), EVM chains</td></tr><tr><th>Function selector of transfer(address,uint256)</th><td>0xa9059cbb (first 4 bytes of the hash)</td></tr></table></div>
+<h2>Where it is used</h2>
+<p>Ethereum uses Keccak-256 for addresses (the last 20 bytes of the hash of the public key), transaction hashes, storage slots and the 4-byte function selectors that every contract call starts with. Type <code>transfer(address,uint256)</code> above and the first 8 hex characters are the selector.</p>
+<h2>Known answers</h2>
+<p>Keccak-256:</p>
+<div class="tablewrap"><table><tr><th>Input</th><th>Digest (hex)</th></tr><tr><td>&quot;&quot; (empty)</td><td class="mono"><code>c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470</code></td></tr><tr><td>&quot;abc&quot;</td><td class="mono"><code>4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45</code></td></tr><tr><td>&quot;hello world&quot;</td><td class="mono"><code>47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad</code></td></tr></table></div>
+<h2>In code</h2>
+<pre><code>// ethers v6
+import { keccak256, toUtf8Bytes } from &quot;ethers&quot;;
+keccak256(toUtf8Bytes(&quot;hello world&quot;));</code></pre>
+<p>More languages: <a href="/code-examples/">SHA-3 code examples</a>. Other calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/shake256/">SHAKE256</a>.</p>
+<h2>Frequently asked</h2>
+<h3>Is the Keccak-256 calculator private?</h3><p>Yes. The hash is computed in your browser; nothing you type or drop is uploaded.</p><h3>What is the Keccak-256 of an empty string?</h3><p>Keccak-256 of &quot;&quot; = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a></span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>
+</body>
+</html>

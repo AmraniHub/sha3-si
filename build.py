@@ -62,11 +62,29 @@ def ga():
             f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}"
             f"gtag('js',new Date());gtag('config','{GA_ID}');</script>")
 
-def page(path, title, desc, body, schema=None, scripts=''):
+LOGO_SVG = ('<svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">'
+            '<rect width="64" height="64" rx="14" fill="#0b0f14"/>'
+            '<path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/>'
+            '<path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/>'
+            '</svg>')
+
+ALGO_LINKS = [('/sha3-256/', 'SHA3-256'), ('/sha3-512/', 'SHA3-512'), ('/keccak-256/', 'Keccak-256'), ('/shake256/', 'SHAKE256')]
+
+def breadcrumb(path, name):
+    if path == '/':
+        return None
+    return {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': 1, 'name': 'sha3.si', 'item': DOMAIN + '/'},
+        {'@type': 'ListItem', 'position': 2, 'name': name, 'item': DOMAIN + path}]}
+
+def page(path, title, desc, body, schema=None, scripts='', focus=''):
     nav = ''.join(f'<a href="{h}"{" class=on" if h == path else ""}>{t}</a>' for h, t in NAV)
     ld = ''
-    for s in (schema or []):
+    crumb = breadcrumb(path, title.split(' | ')[0].split(':')[0])
+    for s in (schema or []) + ([crumb] if crumb else []):
         ld += '<script type="application/ld+json">' + json.dumps(s, ensure_ascii=False) + '</script>'
+    tools = ' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in ALGO_LINKS)
+    body_attr = f' data-focus="{focus}"' if focus else ''
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -80,15 +98,24 @@ def page(path, title, desc, body, schema=None, scripts=''):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{DOMAIN}{path}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{DOMAIN}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{DOMAIN}/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/style.css">
 {ga()}{ld}
 </head>
-<body>
+<body{body_attr}>
 <div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
 <header class="top"><div class="wrap">
-<a class="logo" href="/">sha3<span>.si</span></a>
+<a class="logo" href="/">{LOGO_SVG}<b>sha3<span>.si</span></b></a>
 <nav class="main">{nav}</nav>
 </div></header>
 <main class="wrap">
@@ -96,6 +123,7 @@ def page(path, title, desc, body, schema=None, scripts=''):
 </main>
 <footer><div class="wrap">
 <span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: {tools}</span>
 <span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
 </div></footer>
 {scripts}
@@ -115,7 +143,7 @@ def code(s):
     return '<pre><code>' + html.escape(s.strip('\n')) + '</code></pre>'
 
 def org():
-    return {'@type': 'Organization', 'name': 'sha3.si', 'url': DOMAIN}
+    return {'@type': 'Organization', 'name': 'sha3.si', 'url': DOMAIN, 'logo': DOMAIN + '/icon-512.png'}
 
 def article_schema(path, headline, desc):
     return {'@context': 'https://schema.org', '@type': 'TechArticle', 'headline': headline,
@@ -178,6 +206,14 @@ PAGES['/'] = page('/', 'SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE,
 <p class="note">Check: SHA3-256("hello world") = <code>{HW['sha3_256']}</code>. More in the <a href="/test-vectors/">test vectors</a>.</p>
 
 {buybox()}
+
+<h2>Dedicated calculators</h2>
+<div class="cards">
+<a class="card" href="/sha3-256/"><b>SHA3-256</b><span>The most used SHA-3 size, 256-bit digest.</span></a>
+<a class="card" href="/sha3-512/"><b>SHA3-512</b><span>Largest fixed digest, widest security margin.</span></a>
+<a class="card" href="/keccak-256/"><b>Keccak-256</b><span>Ethereum and Solidity keccak256, function selectors.</span></a>
+<a class="card" href="/shake256/"><b>SHAKE256</b><span>Extendable output: any length you need.</span></a>
+</div>
 
 <h2>Learn SHA-3</h2>
 <div class="cards">
@@ -464,41 +500,204 @@ openssl dgst -sha3-512 myfile.bin''')}
 """, schema=[article_schema(p, 'SHA-3 code examples', d)])
 
 
-# Buy page
+# Algorithm pages: one per most-searched name, each with its own calculator
+# (that row lifted to the top), its own facts and its own known answers.
+def calc_panel(sample):
+    return f"""<section class="panel" aria-label="SHA-3 calculator">
+<div class="tabs">
+<button type="button" data-tab="text" class="on">Text</button>
+<button type="button" data-tab="file">File</button>
+</div>
+<div id="pane-text">
+<textarea id="in" spellcheck="false" aria-label="Input to hash">{html.escape(sample)}</textarea>
+</div>
+<div id="pane-file" class="hidden">
+<div id="drop" class="drop">Drop a file here, or click to choose one.<br><small>The file is read in your browser and never uploaded.</small></div>
+<input id="file" type="file" class="hidden">
+<div class="note" id="fileinfo"></div>
+</div>
+<div class="opts">
+<label>Input <select id="mode"><option value="text">UTF-8 text</option><option value="hex">Hex bytes</option></select></label>
+<label>Output <select id="fmt"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select></label>
+<label>SHAKE length <input id="xoflen" type="number" min="8" max="8192" step="8" value="256"> bits</label>
+</div>
+<div class="note" id="err" role="alert"></div>
+</section>
+<section class="results" id="results" aria-live="polite"></section>"""
+
+CALC_JS = '<script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>'
+SELECTOR_SIG = 'transfer(address,uint256)'
+SELECTOR = keccak256([SELECTOR_SIG])[0]
+assert SELECTOR.startswith('a9059cbb'), SELECTOR  # the well-known ERC-20 transfer selector
+
+ALGO_PAGES = [
+    dict(path='/sha3-256/', focus='sha3_256', name='SHA3-256',
+         title='SHA3-256 Hash Generator Online: free SHA3-256 calculator | sha3.si',
+         desc='Free online SHA3-256 hash generator. Hash text, hex or files with SHA3-256 (FIPS 202) in your browser, '
+              'with test vectors and code examples.',
+         intro='SHA3-256 is the 256-bit member of the SHA-3 family (NIST FIPS 202). It is the most widely used SHA-3 '
+               'output size and the direct counterpart of SHA-256.',
+         facts=[('Output', '256 bits (64 hex characters)'), ('Rate / capacity', '1088 / 512 bits'),
+                ('Collision resistance', '128 bits'), ('Preimage resistance', '256 bits'),
+                ('Standard', 'NIST FIPS 202 (2015)')],
+         uses='Used inside ML-KEM (FIPS 203), the new post-quantum key-encapsulation standard, and anywhere a protocol '
+              'asks for "SHA3-256" by name. If you need Ethereum compatibility, you want <a href="/keccak-256/">Keccak-256</a> instead.',
+         key='sha3_256',
+         snippet='''import hashlib
+hashlib.sha3_256(b"hello world").hexdigest()'''),
+    dict(path='/sha3-512/', focus='sha3_512', name='SHA3-512',
+         title='SHA3-512 Hash Generator Online: free SHA3-512 calculator | sha3.si',
+         desc='Free online SHA3-512 hash generator. Compute SHA3-512 digests of text, hex or files locally in your '
+              'browser, with known-answer test vectors.',
+         intro='SHA3-512 is the largest fixed-size SHA-3 function: a 512-bit digest with the highest security margin '
+               'in the family.',
+         facts=[('Output', '512 bits (128 hex characters)'), ('Rate / capacity', '576 / 1024 bits'),
+                ('Collision resistance', '256 bits'), ('Preimage resistance', '512 bits'),
+                ('Standard', 'NIST FIPS 202 (2015)')],
+         uses='ML-KEM (FIPS 203) uses SHA3-512 as its G function. Choose SHA3-512 when you want the widest security '
+              'margin, for example long-term archives or very high-value signatures.',
+         key='sha3_512',
+         snippet='''import hashlib
+hashlib.sha3_512(b"hello world").hexdigest()'''),
+    dict(path='/keccak-256/', focus='keccak256', name='Keccak-256',
+         title='Keccak-256 Hash Online: Ethereum keccak256 calculator | sha3.si',
+         desc='Free online Keccak-256 hash calculator, compatible with Ethereum and Solidity keccak256. '
+              'Compute function selectors and hashes in your browser.',
+         intro='Keccak-256 is the original Keccak submission with a 256-bit output, before NIST changed the padding '
+               'for SHA-3. Ethereum and every EVM chain use it, which is why it gives different results from SHA3-256.',
+         facts=[('Output', '256 bits'), ('Padding byte', '0x01 (SHA3-256 uses 0x06)'),
+                ('Used by', 'Ethereum, Solidity keccak256(), EVM chains'),
+                (f'Function selector of {SELECTOR_SIG}', f'0x{SELECTOR[:8]} (first 4 bytes of the hash)')],
+         uses='Ethereum uses Keccak-256 for addresses (the last 20 bytes of the hash of the public key), transaction '
+              'hashes, storage slots and the 4-byte function selectors that every contract call starts with. '
+              'Type <code>transfer(address,uint256)</code> above and the first 8 hex characters are the selector.',
+         key='keccak256',
+         snippet='''// ethers v6
+import { keccak256, toUtf8Bytes } from "ethers";
+keccak256(toUtf8Bytes("hello world"));'''),
+    dict(path='/shake256/', focus='shake256', name='SHAKE256',
+         title='SHAKE256 Online: extendable-output SHA-3 calculator | sha3.si',
+         desc='Free online SHAKE256 and SHAKE128 calculator. Choose any output length and hash text, hex or files '
+              'in your browser.',
+         intro='SHAKE256 is an extendable-output function (XOF) from the SHA-3 family: instead of a fixed digest, '
+               'you ask for exactly as many bits as you need, with up to 256-bit security.',
+         facts=[('Output', 'any length you choose'), ('Rate / capacity', '1088 / 512 bits'),
+                ('Security', 'up to 256 bits (collision: min(d/2, 256))'), ('Standard', 'NIST FIPS 202 (2015)'),
+                ('Sibling', 'SHAKE128: rate 1344, up to 128-bit security')],
+         uses='SHAKE256 is used in Ed448 signatures (RFC 8032), in ML-DSA and ML-KEM, and in the SHAKE variants of '
+              'SLH-DSA. Set the output length above to the size your protocol needs.',
+         key='shake256_512', key_label='SHAKE256 with a 512-bit output',
+         snippet='''import hashlib
+hashlib.shake_256(b"hello world").hexdigest(64)  # 64 bytes = 512 bits'''),
+]
+
+for a in ALGO_PAGES:
+    vrows = ''.join(f'<tr><td>{"&quot;&quot; (empty)" if m == "" else "&quot;" + html.escape(m) + "&quot;"}</td>'
+                    f'<td class="mono"><code>{V[m][a["key"]]}</code></td></tr>' for m in MSGS[:3])
+    facts = ''.join(f'<tr><th>{k}</th><td>{v}</td></tr>' for k, v in a['facts'])
+    sample = SELECTOR_SIG if a['focus'] == 'keccak256' else 'hello world'
+    others = ' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in ALGO_LINKS if h != a['path'])
+    faq = [(f'Is the {a["name"]} calculator private?',
+            'Yes. The hash is computed in your browser; nothing you type or drop is uploaded.'),
+           (f'What is the {a["name"]} of an empty string?',
+            f'{a.get("key_label", a["name"])} of "" = {V[""][a["key"]]}')]
+    PAGES[a['path']] = page(a['path'], a['title'], a['desc'], f"""
+<section class="hero">
+<h1>{a['name']} hash calculator</h1>
+<p class="lead">{a['intro']}</p>
+</section>
+{calc_panel(sample)}
+<article>
+<h2>{a['name']} at a glance</h2>
+<div class="tablewrap"><table>{facts}</table></div>
+<h2>Where it is used</h2>
+<p>{a['uses']}</p>
+<h2>Known answers</h2>
+<p>{a.get('key_label', a['name'])}:</p>
+<div class="tablewrap"><table><tr><th>Input</th><th>Digest (hex)</th></tr>{vrows}</table></div>
+<h2>In code</h2>
+{code(a['snippet'])}
+<p>More languages: <a href="/code-examples/">SHA-3 code examples</a>. Other calculators: {others}.</p>
+<h2>Frequently asked</h2>
+{''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(t)}</p>' for q, t in faq)}
+{buybox()}
+</article>
+""", schema=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': f'{a["name"]} hash calculator',
+              'url': DOMAIN + a['path'], 'applicationCategory': 'DeveloperApplication',
+              'operatingSystem': 'Any (web browser)', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
+              'description': a['desc']}, faq_schema(faq)],
+        scripts=CALC_JS, focus=a['focus'])
+
+
+# Buy page: written for the person deciding whether to buy, not for search.
 p = '/buy/'
-d = ('sha3.si is for sale: a short exact-match domain for SHA-3, the NIST cryptographic hash standard. '
-     'For cryptography, cybersecurity, blockchain and developer-tool brands.')
+d = ('sha3.si is for sale: a short exact-match domain for SHA-3, the NIST cryptographic hash standard, with a working '
+     'SHA-3 tools site. For cryptography, cybersecurity, post-quantum, blockchain and developer-tool brands.')
+buy_faq = [
+    ('How do I buy sha3.si?',
+     'Through the Dynadot marketplace listing: buy at the listed price or send an offer. Payment is handled by Dynadot, '
+     'which then moves the domain into the buyer\'s Dynadot account.'),
+    ('Can I keep the domain at another registrar?',
+     'Yes. After the purchase you can transfer it out of Dynadot to the registrar of your choice once any post-sale lock has passed.'),
+    ('Is the website included?',
+     'The current SHA-3 calculator and reference pages can be handed over with the domain, so the name keeps serving '
+     'its visitors from the first day.'),
+    ('Can I pay in instalments?',
+     'Dynadot offers an instalment option on this listing. The domain transfers once the final payment is made.'),
+]
 PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
 <article>
 <h1>sha3.si is for sale</h1>
-<p class="kicker">A four-character, exact-match name for SHA-3, the current NIST hash standard and the core of the new post-quantum cryptography standards.</p>
+<p class="kicker">A four-character, exact-match name for SHA-3, the NIST hash standard at the core of the new post-quantum cryptography, and a working SHA-3 tools site already built on it.</p>
 
 <div class="buy">
 <h2>Buy now or make an offer</h2>
-<p>The sale is handled by Dynadot's marketplace: secure payment, then the domain is transferred to your account.</p>
+<p>Secure checkout through Dynadot's marketplace. Offers and instalments are accepted.</p>
 <a class="btn primary" href="{SALE_URL}" rel="nofollow">Go to the sha3.si listing</a>
 </div>
 
-<h2>Why this name</h2>
+<h2>Why this name is worth owning</h2>
 <ul>
-<li><b>Exact match.</b> "SHA-3" is the official name of a global cryptographic standard (NIST FIPS 202). Every developer and security engineer recognises it.</li>
-<li><b>Short.</b> Four characters before the dot. Easy to say, type and remember.</li>
-<li><b>Growing relevance.</b> SHA-3 and SHAKE sit inside ML-KEM and ML-DSA, the post-quantum standards governments and companies are now migrating to.</li>
-<li><b>Two audiences.</b> NIST SHA-3 for security and compliance, and Keccak (its original form) for Ethereum and EVM blockchains.</li>
-<li><b>Already a working site.</b> It comes with a live SHA-3 calculator and reference pages, so it can start serving users from day one.</li>
+<li><b>It is the name of a standard.</b> "SHA-3" is NIST FIPS 202. Every security engineer, cryptographer and blockchain developer knows it, so the name needs no explanation and no ad budget to be understood.</li>
+<li><b>Short and exact.</b> Four characters before the dot. Easy to say, type and remember, and it matches what people search for.</li>
+<li><b>Rising with post-quantum migration.</b> SHA3-256, SHA3-512, SHAKE128 and SHAKE256 sit inside ML-KEM and ML-DSA, the post-quantum standards that governments and companies must now adopt. Interest in SHA-3 grows with every migration plan.</li>
+<li><b>Two markets in one word.</b> NIST SHA-3 for security and compliance, and Keccak (its original form) for Ethereum and every EVM chain.</li>
+<li><b>.si reads as "super intelligence".</b> The extension carries the 2026 "SI" naming for AI, which adds a second, AI-security reading to the name.</li>
+<li><b>Not an empty name.</b> It comes with a live, fast, private SHA-3 calculator, four dedicated tools and reference pages, already indexed by search engines.</li>
 </ul>
 
-<h2>Good fit for</h2>
+<h2>Who it is for</h2>
 <div class="cards">
-<div class="card"><b>Cryptography and security</b><span>Libraries, HSMs, audit firms, post-quantum migration tools.</span></div>
-<div class="card"><b>Blockchain and Web3</b><span>Wallets, infrastructure, explorers, developer platforms.</span></div>
-<div class="card"><b>Developer tools</b><span>Hashing APIs, integrity checks, file verification, SDKs.</span></div>
-<div class="card"><b>Education</b><span>Courses and references on cryptographic hashing.</span></div>
+<div class="card"><b>Post-quantum and crypto vendors</b><span>A product or migration-tool brand: "post-quantum ready, built on SHA-3".</span></div>
+<div class="card"><b>Security and audit firms</b><span>A memorable campaign or product domain for hashing, integrity and key-management services.</span></div>
+<div class="card"><b>HSM, KMS and cloud security</b><span>A short name for an SDK, a docs portal or a developer landing page.</span></div>
+<div class="card"><b>Blockchain and Web3</b><span>Wallets, node infrastructure, explorers and Keccak-heavy developer tools.</span></div>
+<div class="card"><b>Developer tools and APIs</b><span>A hashing API (api.sha3.si), checksum and file-verification services, CI integrity checks.</span></div>
+<div class="card"><b>AI security</b><span>Model and dataset fingerprinting, provenance and integrity: "SI" security on a SHA-3 name.</span></div>
+<div class="card"><b>Education and publishing</b><span>Courses, books and reference sites on cryptography.</span></div>
+<div class="card"><b>Investors</b><span>A short, standard-name ccTLD domain with an operating site and organic traffic.</span></div>
+</div>
+
+<h2>What you get</h2>
+<ul>
+<li>The domain <b>sha3.si</b>, moved to your account after payment.</li>
+<li>The current website: a SHA-3 calculator (SHA3-224/256/384/512, SHAKE128/256, Keccak-256, text and files), dedicated tool pages, guides, test vectors and code examples, all static and fast.</li>
+<li>Its search presence: pages submitted to Google and Bing, with structured data, a sitemap and an llms.txt for AI assistants.</li>
+</ul>
+
+<h2>Frequently asked</h2>
+{''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(t)}</p>' for q, t in buy_faq)}
+
+<div class="buy">
+<h2>Ready to make it yours?</h2>
+<p>Buy it now or send an offer. Serious offers get a reply.</p>
+<a class="btn primary" href="{SALE_URL}" rel="nofollow">Buy now or make an offer</a>
 </div>
 </article>
 """, schema=[{'@context': 'https://schema.org', '@type': 'Product', 'name': 'sha3.si domain name',
-              'description': d, 'url': DOMAIN + p,
-              'offers': {'@type': 'Offer', 'url': SALE_URL, 'availability': 'https://schema.org/InStock'}}])
+              'description': d, 'url': DOMAIN + p, 'image': DOMAIN + '/og.png', 'brand': org(),
+              'offers': {'@type': 'Offer', 'url': SALE_URL, 'availability': 'https://schema.org/InStock'}},
+             faq_schema(buy_faq)])
 
 
 # 404
@@ -530,10 +729,13 @@ write('/CNAME', 'sha3.si\n')
 INDEXNOW_KEY = 'c5ac5e393c4434c4d852f653b7258532'
 write(f'/{INDEXNOW_KEY}.txt', INDEXNOW_KEY)
 write('/.nojekyll', '')
-write('/favicon.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
-      '<rect width="64" height="64" rx="12" fill="#0b0f14"/>'
-      '<text x="32" y="42" font-family="monospace" font-size="26" font-weight="700" '
-      'text-anchor="middle" fill="#39d3a0">S3</text></svg>\n')
+write('/favicon.svg', LOGO_SVG.replace(' class="mark"', ' xmlns="http://www.w3.org/2000/svg"')
+      .replace(' aria-hidden="true"', '') + '\n')
+write('/site.webmanifest', json.dumps({
+    'name': 'sha3.si: SHA-3 hash tools', 'short_name': 'sha3.si', 'start_url': '/', 'display': 'standalone',
+    'background_color': '#0b0f14', 'theme_color': '#0b0f14',
+    'icons': [{'src': '/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
+              {'src': '/icon-512.png', 'sizes': '512x512', 'type': 'image/png'}]}, indent=1) + '\n')
 write('/llms.txt', f"""# sha3.si
 
 > Free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, plus explanations, comparisons, test vectors and code examples. The domain sha3.si itself is for sale.
@@ -552,6 +754,7 @@ Key facts:
 - [SHA-3 vs Keccak-256]({DOMAIN}/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
 - [Test vectors]({DOMAIN}/test-vectors/): known-answer digests for common inputs
 - [Code examples]({DOMAIN}/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
+- [SHA3-256 calculator]({DOMAIN}/sha3-256/), [SHA3-512 calculator]({DOMAIN}/sha3-512/), [Keccak-256 / Ethereum calculator]({DOMAIN}/keccak-256/), [SHAKE256 calculator]({DOMAIN}/shake256/)
 
 ## Domain
 - [Buy sha3.si]({DOMAIN}/buy/): the domain is available; listing at {SALE_URL}

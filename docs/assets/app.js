@@ -42,6 +42,17 @@
     out.appendChild(row);
   });
 
+  // On an algorithm page (body data-focus="sha3_512"), lift that row to the top.
+  var focus = document.body.getAttribute('data-focus');
+  if (focus) {
+    var fv = document.getElementById('v_' + focus);
+    if (fv) {
+      var frow = fv.parentNode;
+      frow.classList.add('focus');
+      out.insertBefore(frow, out.firstChild);
+    }
+  }
+
   function hexToBytes(h) {
     h = h.replace(/^0x/i, '').replace(/[^0-9a-fA-F]/g, '');
     if (h.length % 2) throw new Error('Hex input must have an even number of digits.');

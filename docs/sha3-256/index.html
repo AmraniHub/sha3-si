@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHA3-256 Hash Generator Online: free SHA3-256 calculator | sha3.si</title>
+<meta name="description" content="Free online SHA3-256 hash generator. Hash text, hex or files with SHA3-256 (FIPS 202) in your browser, with test vectors and code examples.">
+<link rel="canonical" href="https://sha3.si/sha3-256/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHA3-256 Hash Generator Online: free SHA3-256 calculator | sha3.si">
+<meta property="og:description" content="Free online SHA3-256 hash generator. Hash text, hex or files with SHA3-256 (FIPS 202) in your browser, with test vectors and code examples.">
+<meta property="og:url" content="https://sha3.si/sha3-256/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "SHA3-256 hash calculator", "url": "https://sha3.si/sha3-256/", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online SHA3-256 hash generator. Hash text, hex or files with SHA3-256 (FIPS 202) in your browser, with test vectors and code examples."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the SHA3-256 calculator private?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The hash is computed in your browser; nothing you type or drop is uploaded."}}, {"@type": "Question", "name": "What is the SHA3-256 of an empty string?", "acceptedAnswer": {"@type": "Answer", "text": "SHA3-256 of \"\" = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "SHA3-256 Hash Generator Online", "item": "https://sha3.si/sha3-256/"}]}</script>
+</head>
+<body data-focus="sha3_256">
+<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">Calculator</a><a href="/what-is-sha3/">What is SHA-3</a><a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a><a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a><a href="/test-vectors/">Test vectors</a><a href="/code-examples/">Code</a><a href="/buy/">Buy this domain</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>SHA3-256 hash calculator</h1>
+<p class="lead">SHA3-256 is the 256-bit member of the SHA-3 family (NIST FIPS 202). It is the most widely used SHA-3 output size and the direct counterpart of SHA-256.</p>
+</section>
+<section class="panel" aria-label="SHA-3 calculator">
+<div class="tabs">
+<button type="button" data-tab="text" class="on">Text</button>
+<button type="button" data-tab="file">File</button>
+</div>
+<div id="pane-text">
+<textarea id="in" spellcheck="false" aria-label="Input to hash">hello world</textarea>
+</div>
+<div id="pane-file" class="hidden">
+<div id="drop" class="drop">Drop a file here, or click to choose one.<br><small>The file is read in your browser and never uploaded.</small></div>
+<input id="file" type="file" class="hidden">
+<div class="note" id="fileinfo"></div>
+</div>
+<div class="opts">
+<label>Input <select id="mode"><option value="text">UTF-8 text</option><option value="hex">Hex bytes</option></select></label>
+<label>Output <select id="fmt"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select></label>
+<label>SHAKE length <input id="xoflen" type="number" min="8" max="8192" step="8" value="256"> bits</label>
+</div>
+<div class="note" id="err" role="alert"></div>
+</section>
+<section class="results" id="results" aria-live="polite"></section>
+<article>
+<h2>SHA3-256 at a glance</h2>
+<div class="tablewrap"><table><tr><th>Output</th><td>256 bits (64 hex characters)</td></tr><tr><th>Rate / capacity</th><td>1088 / 512 bits</td></tr><tr><th>Collision resistance</th><td>128 bits</td></tr><tr><th>Preimage resistance</th><td>256 bits</td></tr><tr><th>Standard</th><td>NIST FIPS 202 (2015)</td></tr></table></div>
+<h2>Where it is used</h2>
+<p>Used inside ML-KEM (FIPS 203), the new post-quantum key-encapsulation standard, and anywhere a protocol asks for "SHA3-256" by name. If you need Ethereum compatibility, you want <a href="/keccak-256/">Keccak-256</a> instead.</p>
+<h2>Known answers</h2>
+<p>SHA3-256:</p>
+<div class="tablewrap"><table><tr><th>Input</th><th>Digest (hex)</th></tr><tr><td>&quot;&quot; (empty)</td><td class="mono"><code>a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</code></td></tr><tr><td>&quot;abc&quot;</td><td class="mono"><code>3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532</code></td></tr><tr><td>&quot;hello world&quot;</td><td class="mono"><code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code></td></tr></table></div>
+<h2>In code</h2>
+<pre><code>import hashlib
+hashlib.sha3_256(b&quot;hello world&quot;).hexdigest()</code></pre>
+<p>More languages: <a href="/code-examples/">SHA-3 code examples</a>. Other calculators: <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a>.</p>
+<h2>Frequently asked</h2>
+<h3>Is the SHA3-256 calculator private?</h3><p>Yes. The hash is computed in your browser; nothing you type or drop is uploaded.</p><h3>What is the SHA3-256 of an empty string?</h3><p>SHA3-256 of &quot;&quot; = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</p>
+<div class="buy">
+<h2>Own sha3.si</h2>
+<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
+<a class="btn primary" href="https://forsale.dynadot.com/sha3.si" rel="nofollow">Buy now or make an offer</a>
+<a class="btn" href="/buy/">Why this name</a>
+</div>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
+<span>Calculators: <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a></span>
+<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>
+</body>
+</html>
