@@ -642,8 +642,8 @@ buy_faq = [
     ('Is the website included?',
      'The current SHA-3 calculator and reference pages can be handed over with the domain, so the name keeps serving '
      'its visitors from the first day.'),
-    ('Can I pay in instalments?',
-     'Dynadot offers an instalment option on this listing. The domain transfers once the final payment is made.'),
+    ('Can I make an offer below the listed price?',
+     'Yes. Use "Make an offer" on the Dynadot listing. Every serious offer gets a reply.'),
 ]
 PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
 <article>
@@ -652,7 +652,7 @@ PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
 
 <div class="buy">
 <h2>Buy now or make an offer</h2>
-<p>Secure checkout through Dynadot's marketplace. Offers and instalments are accepted.</p>
+<p>Secure checkout through Dynadot's marketplace. Buy it now, or make an offer.</p>
 <a class="btn primary" href="{SALE_URL}" rel="nofollow">Go to the sha3.si listing</a>
 </div>
 
