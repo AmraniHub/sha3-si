@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://sha3.si/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/what-is-sha3/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/sha3-vs-sha256/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/sha3-vs-keccak/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/test-vectors/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/code-examples/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/sha3-256/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/sha3-512/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/keccak-256/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/shake256/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/quantum-safe/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://sha3.si/buy/</loc><lastmod>2026-10-06</lastmod></url>
+  <url><loc>https://sha3.si/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/what-is-sha3/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/sha3-vs-sha256/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/sha3-vs-keccak/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/test-vectors/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/code-examples/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/sha3-256/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/sha3-512/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/keccak-256/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/shake256/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/quantum-safe/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://sha3.si/buy/</loc><lastmod>2026-10-09</lastmod></url>
 </urlset>
