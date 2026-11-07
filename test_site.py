@@ -25,7 +25,7 @@ with sync_playwright() as p:
     pg.on('pageerror', lambda e: errors.append(str(e)))
     pg.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None)
 
-    pg.goto(base + '/')
+    pg.goto(base + '/calculator/')
     v = pg.text_content('#v_sha3_256').strip()
     check(v == hashlib.sha3_256(b'hello world').hexdigest(), 'default SHA3-256(hello world)')
     pg.fill('#in', 'abc')
@@ -55,21 +55,24 @@ with sync_playwright() as p:
     os.remove(fp)
 
     # ?q= deep link
-    pg.goto(base + '/?q=hello%20world')
+    pg.goto(base + '/calculator/?q=hello%20world')
     check(pg.text_content('#v_sha3_256').strip() == hashlib.sha3_256(b'hello world').hexdigest(), '?q= link')
 
-    # every page: loads, no horizontal overflow on a phone, has the sale link
+    # every page: loads, no horizontal overflow on a phone, links the MiCA scan
     m = b.new_page(viewport={'width': 375, 'height': 812})
     m.on('pageerror', lambda e: errors.append(str(e)))
     # /404.html directly: python's test server does not serve it for missing
     # paths, but GitHub Pages does.
-    for path in ['/quantum-safe/', '/sha3-256/', '/sha3-512/', '/keccak-256/', '/shake256/', '/', '/what-is-sha3/', '/sha3-vs-sha256/', '/sha3-vs-keccak/', '/test-vectors/', '/code-examples/', '/buy/', '/404.html']:
+    for path in ['/quantum-safe/', '/sha3-256/', '/sha3-512/', '/keccak-256/', '/shake256/', '/', '/calculator/', '/what-is-sha3/',
+                 '/sha3-vs-sha256/', '/sha3-vs-keccak/', '/test-vectors/', '/code-examples/', '/mica-checklist/', '/evidence/',
+                 '/privacy/', '/terms/', '/404.html']:
         r = m.goto(base + path)
         sw = m.evaluate('document.documentElement.scrollWidth')
         check(sw <= 375, f'{path} fits 375px (scrollWidth {sw})')
-        check(m.locator('a[href="/buy/"]').count() > 0, f'{path} has a sale link')
+        check(m.locator('a[href="/"]').count() > 0, f'{path} links the MiCA scan')
+        check('for sale' not in m.content().lower(), f'{path} has no sale wording')
     m.screenshot(path=os.path.join(tempfile.gettempdir(), 'sha3-mobile.png'), full_page=False)
-    pg.goto(base + '/')
+    pg.goto(base + '/calculator/')
     pg.screenshot(path=os.path.join(tempfile.gettempdir(), 'sha3-desktop.png'), full_page=True)
     check(not errors, 'no console or page errors: ' + '; '.join(errors[:3]))
     b.close()

@@ -75,11 +75,11 @@ def save_og():
     f1 = fit(d, 'sha3.si', MONO_B, 140, maxw)
     d.text((X, 270), 'sha3', font=f1, fill=TEXT)
     d.text((X + d.textlength('sha3', font=f1), 270), '.si', font=f1, fill=ACCENT)
-    line2 = 'SHA-3 hash tools & reference'
+    line2 = 'MiCA website evidence for crypto firms'
     f2 = fit(d, line2, SANS, 46, maxw)
     d.text((X, 435), line2, font=f2, fill=MUTED)
-    tag = 'THIS DOMAIN IS FOR SALE'
-    f3 = font(SANS_B, 30)
+    tag = 'READ FROM FRANKFURT · ANCHORED IN BITCOIN'
+    f3 = fit(d, tag, SANS_B, 30, maxw - 48)
     tw = d.textlength(tag, font=f3)
     d.rounded_rectangle([X, 515, X + tw + 48, 571], radius=12, fill=ACCENT)
     d.text((X + 24, 524), tag, font=f3, fill=(4, 21, 15))

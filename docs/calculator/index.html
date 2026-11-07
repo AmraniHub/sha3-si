@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE, Keccak | sha3.si</title>
+<meta name="description" content="Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser.">
+<link rel="canonical" href="https://sha3.si/calculator/">
+<meta name="sha3si-api" content="https://sha3si-app-amranihubs-projects.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE, Keccak | sha3.si">
+<meta property="og:description" content="Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser.">
+<meta property="og:url" content="https://sha3.si/calculator/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: MiCA website evidence for EU crypto firms, read from Frankfurt and anchored in Bitcoin.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/mica.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MLWFJRRJ1T"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MLWFJRRJ1T');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "sha3.si SHA-3 hash calculator", "url": "https://sha3.si/calculator/", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser."}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my input sent to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Every hash on sha3.si is computed in your browser with JavaScript. Text and files never leave your device."}}, {"@type": "Question", "name": "What is the SHA3-256 hash of an empty string?", "acceptedAnswer": {"@type": "Answer", "text": "SHA3-256('') = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"}}, {"@type": "Question", "name": "Why does my Ethereum keccak256 not match SHA3-256?", "acceptedAnswer": {"@type": "Answer", "text": "Ethereum uses the original Keccak padding, which differs from the final NIST SHA-3 standard (FIPS 202). Same permutation, different padding byte, completely different output. Use the Keccak-256 row for Ethereum."}}, {"@type": "Question", "name": "What is SHAKE?", "acceptedAnswer": {"@type": "Answer", "text": "SHAKE128 and SHAKE256 are the extendable-output functions (XOFs) of the SHA-3 family: you choose the output length."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "SHA-3 Hash Calculator Online", "item": "https://sha3.si/calculator/"}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">MiCA scan</a><a href="/mica-checklist/">What we check</a><a href="/evidence/">Verify evidence</a><a href="/#pricing">Pricing</a><a href="/calculator/" class=on>SHA-3 tools</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<h1>SHA-3 hash calculator</h1>
+<p class="lead">SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, all at once. Text, hex or files, hashed locally in your browser.</p>
+</section>
+
+<section class="panel" aria-label="SHA-3 calculator">
+<div class="tabs">
+<button type="button" data-tab="text" class="on">Text</button>
+<button type="button" data-tab="file">File</button>
+</div>
+<div id="pane-text">
+<label for="in" class="hidden">Input</label>
+<textarea id="in" spellcheck="false" placeholder="Type or paste text to hash...">hello world</textarea>
+</div>
+<div id="pane-file" class="hidden">
+<div id="drop" class="drop">Drop a file here, or click to choose one.<br><small>The file is read in your browser and never uploaded.</small></div>
+<input id="file" type="file" class="hidden">
+<div class="note" id="fileinfo"></div>
+</div>
+<div class="opts">
+<label>Input <select id="mode"><option value="text">UTF-8 text</option><option value="hex">Hex bytes</option></select></label>
+<label>Output <select id="fmt"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select></label>
+<label>SHAKE length <input id="xoflen" type="number" min="8" max="8192" step="8" value="256"> bits</label>
+</div>
+<div class="note" id="err" role="alert"></div>
+</section>
+
+<section class="results" id="results" aria-live="polite"></section>
+<p class="note">Check: SHA3-256("hello world") = <code>644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938</code>. More in the <a href="/test-vectors/">test vectors</a>.</p>
+
+<div class="buy">
+<h2>Run a crypto firm in the EU?</h2>
+<p>sha3.si reads your website from Frankfurt, two clicks deep, checks every MiCA disclosure and fingerprints each page with SHA3-256, anchored in Bitcoin. Free, in about a minute.</p>
+<a class="btn primary" href="/#scan">Scan your website free</a>
+<a class="btn" href="/mica-checklist/">What MiCA asks of your site</a>
+</div>
+
+<a class="card" href="/quantum-safe/" style="margin:24px 0;border-color:var(--accent)">
+<b>New: is your website quantum-safe?</b>
+<span>Check in seconds whether a site accepts post-quantum key exchange (ML-KEM), the NIST standard built on SHA-3. &rarr;</span>
+</a>
+
+<h2>Dedicated calculators</h2>
+<div class="cards">
+<a class="card" href="/sha3-256/"><b>SHA3-256</b><span>The most used SHA-3 size, 256-bit digest.</span></a>
+<a class="card" href="/sha3-512/"><b>SHA3-512</b><span>Largest fixed digest, widest security margin.</span></a>
+<a class="card" href="/keccak-256/"><b>Keccak-256</b><span>Ethereum and Solidity keccak256, function selectors.</span></a>
+<a class="card" href="/shake256/"><b>SHAKE256</b><span>Extendable output: any length you need.</span></a>
+</div>
+
+<h2>Learn SHA-3</h2>
+<div class="cards">
+<a class="card" href="/what-is-sha3/"><b>What is SHA-3?</b><span>Keccak, the sponge construction and FIPS 202, explained.</span></a>
+<a class="card" href="/sha3-vs-sha256/"><b>SHA-3 vs SHA-256</b><span>Design, security, speed and when to use which.</span></a>
+<a class="card" href="/sha3-vs-keccak/"><b>SHA-3 vs Keccak-256</b><span>Why Ethereum hashes differ from NIST SHA-3.</span></a>
+<a class="card" href="/code-examples/"><b>Code examples</b><span>Python, JavaScript, Go, Rust, Java, PHP, C#, OpenSSL.</span></a>
+</div>
+
+<h2>Frequently asked</h2>
+<h3>Is my input sent to a server?</h3><p>No. Every hash on sha3.si is computed in your browser with JavaScript. Text and files never leave your device.</p><h3>What is the SHA3-256 hash of an empty string?</h3><p>SHA3-256(&#x27;&#x27;) = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</p><h3>Why does my Ethereum keccak256 not match SHA3-256?</h3><p>Ethereum uses the original Keccak padding, which differs from the final NIST SHA-3 standard (FIPS 202). Same permutation, different padding byte, completely different output. Use the Keccak-256 row for Ethereum.</p><h3>What is SHAKE?</h3><p>SHAKE128 and SHAKE256 are the extendable-output functions (XOFs) of the SHA-3 family: you choose the output length.</p>
+
+</main>
+<footer><div class="wrap">
+<span><b>sha3.si</b>: MiCA website evidence for crypto-asset service providers. Observations of what a website shows, not legal advice. A service of Servolia LLC, 30 N Gould St, Ste R, Sheridan, WY 82801, USA. <a href="mailto:hello@sha3.si">hello@sha3.si</a></span>
+<span>MiCA: <a href="/">Free scan</a> &middot; <a href="/mica-checklist/">Website checklist</a> &middot; <a href="/evidence/">Verify evidence</a> &middot; <a href="/#pricing">Pricing</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span>
+<span>SHA-3 tools: <a href="/calculator/">Calculator</a> &middot; <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a> &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: <a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a> &middot; <a href="/test-vectors/">Test vectors</a> &middot; <a href="/what-is-sha3/">What is SHA-3</a> &middot; <a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/sha3.min.js"></script><script src="/assets/app.js"></script>
+</body>
+</html>

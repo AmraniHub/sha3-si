@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /r/
+Disallow: /account/
 
 Sitemap: https://sha3.si/sitemap.xml

@@ -10,8 +10,19 @@ from datetime import date
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(ROOT, 'docs')
 DOMAIN = 'https://sha3.si'
-SALE_URL = 'https://forsale.dynadot.com/sha3.si'
 GA_ID = 'G-MLWFJRRJ1T'  # GA4 property for sha3.si
+# The scan / payments API (app/ in this repo, Vercel fra1). Until api.sha3.si
+# has a DNS record, the site calls the project's Vercel alias directly.
+API_URL = os.environ.get('SHA3SI_API', 'https://sha3si-app-amranihubs-projects.vercel.app')
+COMPANY = 'Servolia LLC'
+COMPANY_ADDRESS = '30 N Gould St, Ste R, Sheridan, WY 82801, USA'
+CONTACT = 'hello@sha3.si'
+with open(os.path.join(ROOT, 'app', 'data', 'checklist.json'), encoding='utf-8') as _f:
+    CHECKLIST = json.load(_f)
+with open(os.path.join(ROOT, 'app', 'data', 'register.json'), encoding='utf-8') as _f:
+    _REG = json.load(_f)
+REGISTER_COUNT = len(_REG['firms'])
+REGISTER_AS_OF = _REG['as_of']
 TODAY = date.today().isoformat()
 
 
@@ -46,13 +57,14 @@ HW = V['hello world']
 
 # ---------------------------------------------------------------- layout
 NAV = [
-    ('/', 'Calculator'),
-    ('/quantum-safe/', 'Quantum-safe check'),
-    ('/what-is-sha3/', 'What is SHA-3'),
-    ('/sha3-vs-keccak/', 'SHA-3 vs Keccak'),
-    ('/code-examples/', 'Code'),
-    ('/buy/', 'Buy this domain'),
+    ('/', 'MiCA scan'),
+    ('/mica-checklist/', 'What we check'),
+    ('/evidence/', 'Verify evidence'),
+    ('/#pricing', 'Pricing'),
+    ('/calculator/', 'SHA-3 tools'),
 ]
+# The MiCA service pages carry no analytics: no cookies, no tracking (see /privacy/).
+MICA_PAGES = {'/', '/mica-checklist/', '/r/', '/account/', '/evidence/', '/privacy/', '/terms/'}
 GUIDES = [('/sha3-vs-sha256/', 'SHA-3 vs SHA-256'), ('/test-vectors/', 'Test vectors'),
           ('/what-is-sha3/', 'What is SHA-3'), ('/sha3-vs-keccak/', 'SHA-3 vs Keccak')]
 # The checker service (checker/ in this repo), deployed on Railway.
@@ -80,8 +92,9 @@ def breadcrumb(path, name):
         {'@type': 'ListItem', 'position': 1, 'name': 'sha3.si', 'item': DOMAIN + '/'},
         {'@type': 'ListItem', 'position': 2, 'name': name, 'item': DOMAIN + path}]}
 
-def page(path, title, desc, body, schema=None, scripts='', focus=''):
+def page(path, title, desc, body, schema=None, scripts='', focus='', noindex=False):
     nav = ''.join(f'<a href="{h}"{" class=on" if h == path else ""}>{t}</a>' for h, t in NAV)
+    robots = '<meta name="robots" content="noindex, nofollow">\n' if noindex else ''
     ld = ''
     crumb = breadcrumb(path, title.split(' | ')[0].split(':')[0])
     for s in (schema or []) + ([crumb] if crumb else []):
@@ -95,7 +108,8 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
-<link rel="canonical" href="{DOMAIN}{path}">
+{robots}<link rel="canonical" href="{DOMAIN}{path}">
+<meta name="sha3si-api" content="{API_URL}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="sha3.si">
 <meta property="og:title" content="{html.escape(title)}">
@@ -104,7 +118,7 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 <meta property="og:image" content="{DOMAIN}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="sha3.si: SHA-3 tools and reference. Domain for sale.">
+<meta property="og:image:alt" content="sha3.si: MiCA website evidence for EU crypto firms, read from Frankfurt and anchored in Bitcoin.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{DOMAIN}/og.png">
 <meta name="theme-color" content="#0b0f14">
@@ -114,10 +128,10 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/style.css">
-{ga()}{ld}
+<link rel="stylesheet" href="/assets/mica.css">
+{'' if path in MICA_PAGES else ga()}{ld}
 </head>
 <body{body_attr}>
-<div class="sale">The domain <b>sha3.si</b> is for sale. <a href="/buy/">Make an offer or buy it now &rarr;</a></div>
 <header class="top"><div class="wrap">
 <a class="logo" href="/">{LOGO_SVG}<b>sha3<span>.si</span></b></a>
 <nav class="main">{nav}</nav>
@@ -126,10 +140,10 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 {body}
 </main>
 <footer><div class="wrap">
-<span>sha3.si: free SHA-3 tools and reference. Calculations run in your browser; nothing you type is sent anywhere.</span>
-<span>Calculators: {tools} &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
-<span>Guides: {' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in GUIDES)}</span>
-<span><a href="/buy/">This domain is for sale</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+<span><b>sha3.si</b>: MiCA website evidence for crypto-asset service providers. Observations of what a website shows, not legal advice. A service of {COMPANY}, {COMPANY_ADDRESS}. <a href="mailto:{CONTACT}">{CONTACT}</a></span>
+<span>MiCA: <a href="/">Free scan</a> &middot; <a href="/mica-checklist/">Website checklist</a> &middot; <a href="/evidence/">Verify evidence</a> &middot; <a href="/#pricing">Pricing</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span>
+<span>SHA-3 tools: <a href="/calculator/">Calculator</a> &middot; {tools} &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: {' &middot; '.join(f'<a href="{h}">{t}</a>' for h, t in GUIDES)} &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
 </div></footer>
 {scripts}
 </body>
@@ -137,18 +151,20 @@ def page(path, title, desc, body, schema=None, scripts='', focus=''):
 """
 
 def buybox():
-    return f"""<div class="buy">
-<h2>Own sha3.si</h2>
-<p>A short, exact-match domain for one of the world's core cryptographic standards. Ideal for a security, cryptography, blockchain or developer-tools brand.</p>
-<a class="btn primary" href="{SALE_URL}" rel="nofollow">Buy now or make an offer</a>
-<a class="btn" href="/buy/">Why this name</a>
+    """The call to action on reference pages: the MiCA scan (formerly the domain sale box)."""
+    return """<div class="buy">
+<h2>Run a crypto firm in the EU?</h2>
+<p>sha3.si reads your website from Frankfurt, two clicks deep, checks every MiCA disclosure and fingerprints each page with SHA3-256, anchored in Bitcoin. Free, in about a minute.</p>
+<a class="btn primary" href="/#scan">Scan your website free</a>
+<a class="btn" href="/mica-checklist/">What MiCA asks of your site</a>
 </div>"""
 
 def code(s):
     return '<pre><code>' + html.escape(s.strip('\n')) + '</code></pre>'
 
 def org():
-    return {'@type': 'Organization', 'name': 'sha3.si', 'url': DOMAIN, 'logo': DOMAIN + '/icon-512.png'}
+    return {'@type': 'Organization', 'name': 'sha3.si', 'url': DOMAIN, 'logo': DOMAIN + '/icon-512.png',
+            'email': CONTACT, 'parentOrganization': {'@type': 'Organization', 'name': COMPANY}}
 
 def article_schema(path, headline, desc):
     return {'@context': 'https://schema.org', '@type': 'TechArticle', 'headline': headline,
@@ -165,7 +181,7 @@ def faq_schema(qa):
 # ---------------------------------------------------------------- pages
 PAGES = {}
 
-# Home: the calculator
+# The SHA-3 calculator (the site's homepage until the MiCA service took /)
 home_desc = ('Free online SHA-3 hash calculator: SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 '
              'and Ethereum Keccak-256. Hash text, hex or files, all locally in your browser.')
 home_faq = [
@@ -179,7 +195,7 @@ home_faq = [
     ('What is SHAKE?',
      'SHAKE128 and SHAKE256 are the extendable-output functions (XOFs) of the SHA-3 family: you choose the output length.'),
 ]
-PAGES['/'] = page('/', 'SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE, Keccak | sha3.si', home_desc, f"""
+PAGES['/calculator/'] = page('/calculator/', 'SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE, Keccak | sha3.si', home_desc, f"""
 <section class="hero">
 <h1>SHA-3 hash calculator</h1>
 <p class="lead">SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, all at once. Text, hex or files, hashed locally in your browser.</p>
@@ -237,7 +253,7 @@ PAGES['/'] = page('/', 'SHA-3 Hash Calculator Online: SHA3-256, SHA3-512, SHAKE,
 {''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(a)}</p>' for q, a in home_faq)}
 """, schema=[
     {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'sha3.si SHA-3 hash calculator',
-     'url': DOMAIN + '/', 'applicationCategory': 'DeveloperApplication', 'operatingSystem': 'Any (web browser)',
+     'url': DOMAIN + '/calculator/', 'applicationCategory': 'DeveloperApplication', 'operatingSystem': 'Any (web browser)',
      'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
      'description': home_desc},
     faq_schema(home_faq),
@@ -705,83 +721,334 @@ PAGES[p] = page(p, 'Is your website quantum-safe? Free post-quantum TLS check (M
     scripts='<script src="/assets/qs.js"></script>')
 
 
-# Buy page: written for the person deciding whether to buy, not for search.
-p = '/buy/'
-d = ('sha3.si is for sale: a short exact-match domain for SHA-3, the NIST cryptographic hash standard, with a working '
-     'SHA-3 tools site. For cryptography, cybersecurity, post-quantum, blockchain and developer-tool brands.')
-buy_faq = [
-    ('How do I buy sha3.si?',
-     'Through the Dynadot marketplace listing: buy at the listed price or send an offer. Payment is handled by Dynadot, '
-     'which then moves the domain into the buyer\'s Dynadot account.'),
-    ('Can I keep the domain at another registrar?',
-     'Yes. After the purchase you can transfer it out of Dynadot to the registrar of your choice once any post-sale lock has passed.'),
-    ('Is the website included?',
-     'The current SHA-3 calculator and reference pages can be handed over with the domain, so the name keeps serving '
-     'its visitors from the first day.'),
-    ('Can I make an offer below the listed price?',
-     'Yes. Use "Make an offer" on the Dynadot listing. Every serious offer gets a reply.'),
+# ---------------------------------------------------------------- MiCA service
+# The product pages. The scan, payments and evidence API live in app/ (Vercel,
+# Frankfurt); these pages are static and call it from the browser (assets/mica.js).
+NOINDEX = {'/r/', '/account/'}
+EXTRA_FILES = {}
+MICA_JS = '<script src="/assets/mica.js" defer></script>'
+
+DIALOGS = f"""
+<dialog class="modal" id="lead-dialog">
+<form id="lead-form" method="dialog" novalidate>
+<h3>Send me the full report</h3>
+<p class="note" id="lead-note"></p>
+<label>Work email<input type="email" name="email" required autocomplete="email"></label>
+<label>Name<input type="text" name="name" autocomplete="name"></label>
+<label>Company<input type="text" name="company" autocomplete="organization"></label>
+<label>Role<input type="text" name="role" placeholder="Compliance officer, MLRO, General Counsel..."></label>
+<label>Message (optional)<textarea name="message" id="lead-msg"></textarea></label>
+<input type="hidden" name="scan_id" id="lead-scan">
+<label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+<label class="check"><input type="checkbox" name="consent" required> I agree that sha3.si may email me about this request. See the <a href="/privacy/">privacy notice</a>.</label>
+<p class="form-err" id="lead-err" role="alert"></p>
+<div class="row-end"><button type="button" class="btn" id="lead-close">Close</button><button type="submit" class="btn primary">Send</button></div>
+</form>
+<div class="ok" id="lead-ok" hidden><h3>Thank you</h3><p>We reply from {CONTACT}, normally the same working day.</p></div>
+</dialog>
+<dialog class="modal" id="buy-dialog">
+<form id="buy-form" method="dialog" novalidate>
+<h3>Order</h3>
+<p><b id="buy-plan"></b></p>
+<label>Work email (for the invoice and the report)<input type="email" name="email" required autocomplete="email"></label>
+<label>Website to audit or monitor<input type="text" name="host" required placeholder="example.com" inputmode="url"></label>
+<input type="hidden" name="plan"><input type="hidden" name="scan_id">
+<p class="note">Payment by card through Stripe. Prices exclude VAT; EU business customers add their VAT number at checkout (reverse charge). Billed by {COMPANY}.</p>
+<p class="form-err" id="buy-err" role="alert"></p>
+<div class="row-end"><button type="button" class="btn" id="buy-close">Cancel</button><button type="submit" class="btn primary">Continue to payment</button></div>
+</form>
+</dialog>"""
+
+check_cards = ''.join(
+    f'<div class="card"><b>{html.escape(c["title"])}</b><span>{html.escape(c["what"])}</span>'
+    f'<span class="rep-ref">{html.escape(c["ref"])}</span></div>' for c in CHECKLIST['checks'])
+
+mica_faq = [
+    ('Is this legal advice?',
+     'No. sha3.si records what your website showed, when, and from where, and explains which MiCA duty each finding relates to. '
+     'Whether something is a breach is for your compliance team, your counsel and your supervisor to decide.'),
+    ('Who runs sha3.si?',
+     f'sha3.si is a service of {COMPANY}, a Wyoming (USA) company. Scans run on servers in Frankfurt am Main, Germany. '
+     'We are not a law firm, and we never hold, move or exchange crypto-assets.'),
+    ('What does the free scan read?',
+     'Your homepage, robots.txt and sitemap, up to six legal or disclosure pages linked from the homepage, the disclosure pages it finds, '
+     'and one asset page when it looks for white papers: about twenty requests, made like a desktop browser. It never submits a form '
+     'and never clicks a consent banner.'),
+    ('Why "two clicks"?',
+     'MiCA asks for fee and climate disclosures "in a prominent place" on the website. The Dutch AFM, reviewing crypto firms in 2026, '
+     'looked for cost information within one or two clicks of the homepage. We use the same yardstick.'),
+    ('What does Claude do?',
+     "Claude, Anthropic's AI model, reads the public text of the pages the scanner found and judges what they say against each duty: "
+     'is the fee page a real policy, does the climate page give indicators per crypto-asset, does the complaints page offer a template. '
+     'It quotes your page exactly and says "unclear" when the text does not allow a judgment. No personal data is sent to it.'),
+    ('Can I check the evidence without trusting you?',
+     'Yes. Every page we read has a SHA3-256 fingerprint of the exact bytes received, every report is sealed with its own fingerprint, '
+     'and each day the fingerprints are folded into a Merkle tree whose root is timestamped in Bitcoin through OpenTimestamps. '
+     'The verification page recomputes the Merkle proof in your browser, and the open-source ots client checks the Bitcoin proof.'),
+    ('My site is built with JavaScript. Does the scan still work?',
+     'The free scan reads the HTML your server sends, so menus drawn later by JavaScript can be missed; the report says so when it happens. '
+     'The paid audit adds a full browser pass.'),
+    ('What do you store?',
+     'The public pages we fetched, the reports, and their fingerprints. Your email and name only if you send them to us. '
+     'Your IP address is never stored in clear: a salted hash is kept for an hour to stop abuse. No cookies, no tracking.'),
 ]
-PAGES[p] = page(p, 'Buy sha3.si: premium SHA-3 domain for sale', d, f"""
-<article>
-<h1>sha3.si is for sale</h1>
-<p class="kicker">A four-character, exact-match name for SHA-3, the NIST hash standard at the core of the new post-quantum cryptography, and a working SHA-3 tools site already built on it.</p>
 
-<div class="buy">
-<h2>Buy now or make an offer</h2>
-<p>Secure checkout through Dynadot's marketplace. Buy it now, or make an offer.</p>
-<a class="btn primary" href="{SALE_URL}" rel="nofollow">Go to the sha3.si listing</a>
+PAGES['/'] = page('/', 'MiCA website check for crypto firms: free scan from Frankfurt | sha3.si',
+    'Free MiCA website scan for EU crypto-asset service providers: fee policy, climate disclosures, complaints, risk warnings and white papers, '
+    'checked two clicks deep from Frankfurt, reviewed by Claude, every page fingerprinted with SHA3-256 and anchored in Bitcoin.', f"""
+<section class="hero mica" id="scan">
+<span class="kicker-tag"><i></i>MiCA website evidence &middot; read from Frankfurt</span>
+<h1>See your website the way your <em>supervisor</em> does.</h1>
+<p class="lead">sha3.si reads a crypto firm's site from inside the EU, two clicks deep, and checks every disclosure MiCA asks for. Claude then judges what each page actually says. Every page is fingerprinted with SHA3-256 and anchored in Bitcoin, so the evidence still stands months later.</p>
+<div class="scan-panel">
+<form id="scan-form" class="scan-form" autocomplete="off" role="search">
+<label for="scan-url" class="hidden">Firm name or website</label>
+<input id="scan-url" type="text" inputmode="url" spellcheck="false" placeholder="Firm name or website, e.g. coinhouse.com" aria-autocomplete="list" aria-controls="scan-suggest" required>
+<ul id="scan-suggest" class="suggest" role="listbox" hidden></ul>
+<button class="btn primary" type="submit">Scan free</button>
+</form>
+<p class="scan-hint">Free, no sign-up, about a minute. Search the {REGISTER_COUNT} firms in ESMA's MiCA register (as of {REGISTER_AS_OF}) or type any website. Try:<a href="#" data-try="coinhouse.com">coinhouse.com</a><a href="#" data-try="weareblox.com">weareblox.com</a><a href="#" data-try="criptan.com">criptan.com</a></p>
 </div>
+<div id="scan-out" hidden></div>
+</section>
 
-<h2>Why this name is worth owning</h2>
-<ul>
-<li><b>It is the name of a standard.</b> "SHA-3" is NIST FIPS 202. Every security engineer, cryptographer and blockchain developer knows it, so the name needs no explanation and no ad budget to be understood.</li>
-<li><b>Short and exact.</b> Four characters before the dot. Easy to say, type and remember, and it matches what people search for.</li>
-<li><b>Rising with post-quantum migration.</b> SHA3-256, SHA3-512, SHAKE128 and SHAKE256 sit inside ML-KEM and ML-DSA, the post-quantum standards that governments and companies must now adopt. Interest in SHA-3 grows with every migration plan.</li>
-<li><b>Two markets in one word.</b> NIST SHA-3 for security and compliance, and Keccak (its original form) for Ethereum and every EVM chain.</li>
-<li><b>.si reads as "super intelligence".</b> The extension carries the 2026 "SI" naming for AI, which adds a second, AI-security reading to the name.</li>
-<li><b>Not an empty name.</b> It comes with a live <a href="/quantum-safe/">quantum-safety checker</a> (does a website accept post-quantum ML-KEM key exchange?), a private SHA-3 calculator, four dedicated tools and reference pages, already submitted to search engines.</li>
-<li><b>A ready lead source for post-quantum vendors.</b> Everyone who runs the checker is someone asking whether their systems are quantum-safe, exactly the audience post-quantum, PKI and HSM companies pay to reach.</li>
-</ul>
-
-<h2>Who it is for</h2>
-<div class="cards">
-<div class="card"><b>Post-quantum and crypto vendors</b><span>A product or migration-tool brand: "post-quantum ready, built on SHA-3".</span></div>
-<div class="card"><b>Security and audit firms</b><span>A memorable campaign or product domain for hashing, integrity and key-management services.</span></div>
-<div class="card"><b>HSM, KMS and cloud security</b><span>A short name for an SDK, a docs portal or a developer landing page.</span></div>
-<div class="card"><b>Blockchain and Web3</b><span>Wallets, node infrastructure, explorers and Keccak-heavy developer tools.</span></div>
-<div class="card"><b>Developer tools and APIs</b><span>A hashing API (api.sha3.si), checksum and file-verification services, CI integrity checks.</span></div>
-<div class="card"><b>AI security</b><span>Model and dataset fingerprinting, provenance and integrity: "SI" security on a SHA-3 name.</span></div>
-<div class="card"><b>Education and publishing</b><span>Courses, books and reference sites on cryptography.</span></div>
-<div class="card"><b>Investors</b><span>A short, standard-name ccTLD domain with an operating site and organic traffic.</span></div>
+<section class="band">
+<h2>The grace period is over</h2>
+<p class="sub">MiCA's transitional period ended on 1 July 2026. Supervisors have moved from guidance to letters and fines, and the website is the first thing they read.</p>
+<div class="stats">
+<div class="stat"><b>19 of 33</b><span>crypto firms reviewed by the Dutch AFM had significant failures in their cost information. "The period of leniency has ended." <a href="https://www.afm.nl/en/sector/actueel/2026/apr/pb-reclame-informatie-casps" rel="noopener" target="_blank">AFM, 16 April 2026</a></span></div>
+<div class="stat"><b>25 of 52</b><span>Dutch and Maltese firms in ESMA's register had at least one required disclosure our scanner could not reach within two clicks of the homepage. Screening, November 2026.</span></div>
+<div class="stat"><b>&euro;70,000</b><span>Austria's first binding MiCA penalty, for marketing communications and a late white paper. <a href="https://www.crowdfundinsider.com/2026/08/297983-austrias-financial-market-authority-fma-issues-first-binding-mica-penalty-against-bitpanda/" rel="noopener" target="_blank">FMA, August 2026</a></span></div>
 </div>
+</section>
 
-<h2>What you get</h2>
+<section class="band">
+<h2>What we check</h2>
+<p class="sub">Eight website duties from MiCA and ESMA, each with the article it comes from. Full explanations in the <a href="/mica-checklist/">MiCA website checklist</a>.</p>
+<div class="checklist">{check_cards}</div>
+</section>
+
+<section class="band">
+<h2>Evidence that holds up</h2>
+<p class="sub">A screenshot proves little. A fingerprint anchored in a public blockchain proves the page looked exactly like this, on this date.</p>
+<div class="chain">
+<div><b>Read from Frankfurt</b><span>Every request leaves a server in Frankfurt am Main, so the scan sees the EU version of your site, geo-routing and cookie walls included.</span></div>
+<div><b>Fingerprinted</b><span>The exact bytes of every page get a SHA3-256 fingerprint, the NIST hash standard this site is named after.</span></div>
+<div><b>Sealed</b><span>Each report gets its own fingerprint, and every day's reports are folded into one Merkle tree.</span></div>
+<div><b>Anchored in Bitcoin</b><span>The day's root is timestamped through OpenTimestamps. Anyone can verify it later, without trusting us. No wallet, no tokens.</span></div>
+</div>
+<p class="note"><a href="/evidence/">Verify a record yourself &rarr;</a></p>
+</section>
+
+<section class="band" id="pricing">
+<h2>Pricing</h2>
+<p class="sub">Start free. Pay when you want a person to check every finding, or a weekly watch on your site.</p>
+<div class="pricing">
+<div class="plan">
+<h3>Free scan</h3>
+<div class="price">&euro;0</div>
 <ul>
-<li>The domain <b>sha3.si</b>, moved to your account after payment.</li>
-<li>The quantum-safety checker: the web page and the checker service (Go, open source), ready to move to your hosting.</li>
-<li>The current website: a SHA-3 calculator (SHA3-224/256/384/512, SHAKE128/256, Keccak-256, text and files), dedicated tool pages, guides, test vectors and code examples, all static and fast.</li>
-<li>Its search presence: pages submitted to Google and Bing, with structured data, a sitemap and an llms.txt for AI assistants.</li>
+<li>Eight MiCA website checks, two clicks deep, from Frankfurt</li>
+<li>Claude's reading of your disclosure pages, for firms in ESMA's register while the day's capacity lasts</li>
+<li>Private report link, with every page fingerprinted</li>
 </ul>
+<a class="btn" href="#scan">Scan now</a>
+</div>
+<div class="plan featured">
+<h3>MiCA website audit</h3>
+<div class="price">&euro;1,490 <small>one-off</small></div>
+<ul>
+<li>A browser-rendered pass over your whole disclosure path</li>
+<li>Every finding checked by a person against the regulation</li>
+<li>Replacement wording, written in your site's language</li>
+<li>Evidence pack: fingerprints, Merkle proofs, Bitcoin anchors</li>
+<li>Delivered within 48 hours</li>
+</ul>
+<button type="button" class="btn primary" data-plan="audit">Order the audit</button>
+</div>
+<div class="plan">
+<h3>Monitor</h3>
+<div class="price">&euro;290 <small>per month</small></div>
+<ul>
+<li>A fresh scan from Frankfurt every week</li>
+<li>An email when a disclosure link breaks or a page changes</li>
+<li>A tamper-evident evidence log to show your supervisor</li>
+<li>An evidence pack you can download at any time: every record, its Merkle proof and its Bitcoin anchor</li>
+</ul>
+<div class="plan-btns"><button type="button" class="btn primary" data-plan="monitor_month">Monthly</button><button type="button" class="btn" data-plan="monitor_year">&euro;2,900 a year, audit included</button></div>
+</div>
+</div>
+<p class="note">Prices exclude VAT. EU business customers: reverse charge, add your VAT number at checkout. Billed by {COMPANY} through Stripe. Several brands or websites? <a href="#" data-lead="group">Ask for a group price</a>.</p>
+</section>
 
+<section class="band">
 <h2>Frequently asked</h2>
-{''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(t)}</p>' for q, t in buy_faq)}
+{''.join(f'<h3>{html.escape(q)}</h3><p>{html.escape(a)}</p>' for q, a in mica_faq)}
+</section>
+{DIALOGS}
+""", schema=[
+    {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'sha3.si MiCA website scan',
+     'url': DOMAIN + '/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Any (web browser)',
+     'offers': [{'@type': 'Offer', 'name': 'Free scan', 'price': '0', 'priceCurrency': 'EUR'},
+                {'@type': 'Offer', 'name': 'MiCA website audit', 'price': '1490', 'priceCurrency': 'EUR'},
+                {'@type': 'Offer', 'name': 'Monitor (monthly)', 'price': '290', 'priceCurrency': 'EUR'}],
+     'provider': org()},
+    faq_schema(mica_faq),
+], scripts=MICA_JS)
 
-<div class="buy">
-<h2>Ready to make it yours?</h2>
-<p>Buy it now or send an offer. Serious offers get a reply.</p>
-<a class="btn primary" href="{SALE_URL}" rel="nofollow">Buy now or make an offer</a>
-</div>
+
+# The checklist, explained: the page people find when they search for MiCA's website rules.
+p = '/mica-checklist/'
+d = ('What MiCA requires on a crypto firm\'s website: pricing and fees policy, climate disclosures per crypto-asset, complaints '
+     'procedure and template, risk warnings, white-paper links and the line between regulated and unregulated services.')
+duty_text = {
+    'licence': 'Information to clients must be fair, clear and not misleading, and marketing must be recognisable as marketing (Art. 66(2)). '
+               'ESMA expects authorised firms to say they are authorised, and by whom, and not to let that status cover services outside MiCA.',
+    'fees': 'Firms must make their policies on pricing, costs and fees public, in a prominent place on their website (Art. 66(4)). '
+            'A sales page that promises "low fees" is not a policy: say how prices are formed (spreads, mark-ups), which fees apply to which service, and how changes are announced.',
+    'sustainability': 'Firms must publish, in a prominent place on their website, the principal adverse climate and environmental impacts of the consensus mechanism '
+                      'behind each crypto-asset they serve (Art. 66(5)). Commission Delegated Regulation (EU) 2025/422 sets the indicators, such as energy consumption, '
+                      'renewable share and emissions, and the reporting period. A corporate environmental policy does not replace per-asset indicators.',
+    'complaints': 'Firms must have and publish a complaints-handling procedure, let clients complain free of charge, tell them they can complain, and make a complaint '
+                  'template available (Art. 71(1)-(3)). Commission Delegated Regulation (EU) 2025/294 adds the detail on the procedure and the template.',
+    'whitepapers': 'Firms that run a trading platform, exchange crypto-assets for funds or other crypto-assets, give advice or manage portfolios must give clients '
+                   'hyperlinks to the white papers of the crypto-assets they provide those services for (Art. 66(3)).',
+    'risk': 'Firms must warn clients of the risks of crypto-asset transactions (Art. 66(3)). A warning hidden in the footer while the page above promotes a yield '
+            'is the pattern supervisors keep pointing to.',
+    'unregulated': 'Some staking, lending, earn and DeFi products fall outside MiCA. ESMA has warned firms not to present them under their MiCA authorisation, '
+                   'and to label them clearly as outside it (ESMA35-1872330276-2329).',
+    'register': "ESMA's interim register lists each authorised firm with its website. When that address does not open the firm's own site, or the site never names "
+                'the registered legal entity, clients and supervisors cannot connect the two.',
+}
+sections = ''.join(
+    f'<h2>{i}. {html.escape(c["title"])}</h2><p class="kicker">{html.escape(c["ref"])} &middot; <a href="{html.escape(c["source"])}" rel="noopener" target="_blank">source</a></p>'
+    f'<p>{html.escape(duty_text[c["id"]])}</p>' for i, c in enumerate(CHECKLIST['checks'], 1))
+PAGES[p] = page(p, 'MiCA website requirements: the checklist for crypto-asset service providers (2026) | sha3.si', d, f"""
+<article>
+<h1>MiCA website requirements: the checklist</h1>
+<p class="kicker">What the Markets in Crypto-Assets Regulation and ESMA expect to find on a CASP's website, duty by duty. Updated {TODAY}.</p>
+<p>{html.escape(CHECKLIST['yardstick'])}</p>
+{sections}
+<h2>Check your own site</h2>
+<p>The free scan runs all eight checks from Frankfurt in about a minute and fingerprints every page it reads. <a href="/#scan">Scan your website</a>.</p>
+<p class="note">This page summarises the rules in plain words; it is not legal advice. Read the regulation on <a href="https://eur-lex.europa.eu/eli/reg/2023/1114/oj" rel="noopener" target="_blank">EUR-Lex</a>.</p>
+{buybox()}
 </article>
-""", schema=[{'@context': 'https://schema.org', '@type': 'Product', 'name': 'sha3.si domain name',
-              'description': d, 'url': DOMAIN + p, 'image': DOMAIN + '/og.png', 'brand': org(),
-              'offers': {'@type': 'Offer', 'url': SALE_URL, 'availability': 'https://schema.org/InStock'}},
-             faq_schema(buy_faq)])
+""", schema=[article_schema(p, 'MiCA website requirements: the checklist for CASPs', d)])
 
+
+# Private report page (link with id and token from a scan).
+PAGES['/r/'] = page('/r/', 'Your MiCA website report | sha3.si', 'A private sha3.si MiCA website report.', f"""
+<section class="hero"><h1>MiCA website report</h1>
+<p class="lead">A private link: anyone holding it can read this report, so share it only inside your firm.</p></section>
+<div id="report" class="scan-result">Loading the report&hellip;</div>
+{DIALOGS}
+""", scripts=MICA_JS, noindex=True)
+
+# After checkout, and the client's private account page.
+PAGES['/account/'] = page('/account/', 'Your sha3.si account', 'Your sha3.si order, reports and evidence.', f"""
+<section class="hero"><h1>Your sha3.si account</h1>
+<p class="lead">Your order, your scans and their evidence. Questions: <a href="mailto:{CONTACT}">{CONTACT}</a>.</p></section>
+<div id="account" class="scan-result">Loading&hellip;</div>
+""", scripts=MICA_JS, noindex=True)
+
+# Public verification of any record.
+p = '/evidence/'
+d = 'Verify a sha3.si record: its SHA3-256 fingerprint, its Merkle proof and its Bitcoin anchor through OpenTimestamps.'
+PAGES[p] = page(p, 'Verify a sha3.si evidence record | sha3.si', d, f"""
+<section class="hero"><h1>Verify a record</h1>
+<p class="lead">Paste a record fingerprint from any sha3.si report. The Merkle proof is recomputed in your browser, and the Bitcoin proof can be checked with the open-source OpenTimestamps client.</p></section>
+<section class="panel">
+<form id="ev-form" class="qs-form" autocomplete="off">
+<label for="ev-hash" class="hidden">Record fingerprint</label>
+<input id="ev-hash" type="text" spellcheck="false" placeholder="64-character SHA3-256 record fingerprint" pattern="[0-9a-fA-F]{{64}}" required>
+<button class="btn primary" type="submit">Verify</button>
+</form>
+</section>
+<div id="evidence"></div>
+<article>
+<h2>How the evidence works</h2>
+<ol>
+<li><b>Pages.</b> The SHA3-256 of the exact bytes the server sent is stored with the URL, the HTTP status and the time. Change one byte and the fingerprint changes completely.</li>
+<li><b>Records.</b> Each report is serialised as canonical JSON (keys sorted, no spaces) and fingerprinted with SHA3-256. The fingerprint covers the check results and every page fingerprint.</li>
+<li><b>Days.</b> After each UTC day, all record fingerprints are sorted and combined pairwise with SHA3-256 into a Merkle tree. Its root is written into a small text file.</li>
+<li><b>Bitcoin.</b> The SHA-256 of that file is submitted to the OpenTimestamps calendars, which commit it into a Bitcoin transaction. The proof file (.ots) can be checked by anyone with the <a href="https://github.com/opentimestamps/opentimestamps-client" rel="noopener" target="_blank">ots client</a>: <code>ots verify sha3si-DAY.txt.ots</code>.</li>
+</ol>
+<p>You can recompute any SHA3-256 fingerprint yourself with our <a href="/sha3-256/">SHA3-256 calculator</a>.</p>
+</article>
+""", schema=[article_schema(p, 'Verify a sha3.si evidence record', d)],
+    scripts='<script src="/assets/sha3.min.js"></script>' + MICA_JS)
+
+# Privacy notice.
+p = '/privacy/'
+PAGES[p] = page(p, 'Privacy notice | sha3.si', 'How sha3.si handles data: what we collect, why, where it is processed and your rights.', f"""
+<article>
+<h1>Privacy notice</h1>
+<p class="kicker">Last updated {TODAY}.</p>
+<h2>Who we are</h2>
+<p>sha3.si is operated by {COMPANY}, {COMPANY_ADDRESS} (the controller). Contact for any privacy question: <a href="mailto:{CONTACT}">{CONTACT}</a>.</p>
+<h2>What we collect, and why</h2>
+<ul>
+<li><b>Websites you ask us to scan</b>, and the public pages we fetch from them, with their fingerprints and the resulting report. Purpose: to provide the scan and keep verifiable evidence. These are business websites, not personal data, unless a page itself contains some.</li>
+<li><b>Your details, if you send the form</b>: email, name, company, role and message. Purpose: to answer your request (our legitimate interest, and your consent to be contacted). We do not add you to a mailing list.</li>
+<li><b>Payment details</b> are handled by Stripe. We receive your name, email, billing address and VAT number to invoice you (contract and legal obligation).</li>
+<li><b>Your IP address</b> is never stored in clear. A salted hash is kept for about an hour to limit abuse of the free scan (legitimate interest).</li>
+</ul>
+<p>No cookies and no tracking on the MiCA service. Your browser may store your email locally, on your device only, to pre-fill forms.</p>
+<h2>Who processes it for us</h2>
+<ul>
+<li>Vercel Inc. (application hosting; scans run in Frankfurt, Germany)</li>
+<li>Turso (database)</li>
+<li>Anthropic PBC (Claude reads the public text of scanned pages; no personal data is sent)</li>
+<li>Stripe (payments and invoices)</li>
+<li>Google (email)</li>
+<li>GitHub (hosting of these static pages)</li>
+</ul>
+<p>Some of these providers are in the United States. Transfers rely on the EU-US Data Privacy Framework where the provider is certified, or on the European Commission's standard contractual clauses.</p>
+<h2>How long we keep it</h2>
+<p>Reports and evidence: as long as the service runs, because evidence is only useful if it lasts. Form messages: two years after our last exchange. Invoices: as long as tax law requires.</p>
+<h2>Your rights</h2>
+<p>You can ask for access to, correction or deletion of your personal data, object to its use, or ask for a copy, by writing to <a href="mailto:{CONTACT}">{CONTACT}</a>. You can also complain to your data protection authority.</p>
+</article>
+""")
+
+# Terms of service.
+p = '/terms/'
+PAGES[p] = page(p, 'Terms of service | sha3.si', 'The terms for the sha3.si MiCA website scan, audit and monitor.', f"""
+<article>
+<h1>Terms of service</h1>
+<p class="kicker">Last updated {TODAY}. These terms apply between {COMPANY} ("we") and the business using sha3.si ("you").</p>
+<h2>1. The service</h2>
+<p>sha3.si reads public websites from servers in the European Union and reports what they show against website duties in Regulation (EU) 2023/1114 (MiCA) and ESMA guidance. The free scan is automated. The audit adds a browser-rendered pass and a person's review, delivered within 48 hours of payment unless we agree otherwise. The monitor re-scans the website you name every week for as long as the subscription runs.</p>
+<h2>2. Not legal advice</h2>
+<p>Reports are observations of what a website showed at a given time, with references to the rules they relate to. They are not legal advice and do not say whether you comply with the law. We do not guarantee that a supervisor will reach the same view.</p>
+<h2>3. Business customers only</h2>
+<p>The paid services are for businesses. Prices are in euros and exclude VAT. For EU business customers, the reverse-charge mechanism applies.</p>
+<h2>4. Payment, renewal and cancellation</h2>
+<p>The audit is paid in advance. The monitor renews monthly or yearly until you cancel; you can cancel at any time from the billing link in your account, effective at the end of the period already paid. If we cannot deliver a paid audit, we refund it.</p>
+<h2>5. Fair use</h2>
+<p>Do not use the scanner to overload a website, to get around a site's access controls, or for anything unlawful. We may limit or refuse scans to protect the sites we read and the service.</p>
+<h2>6. Your reports</h2>
+<p>You may use your reports and evidence freely within your business, including with your supervisors, auditors and advisers. Private report links grant access to anyone who holds them; keep them inside your firm.</p>
+<h2>7. Liability</h2>
+<p>To the extent the law allows, our total liability under these terms is limited to the fees you paid us in the twelve months before the claim, and we are not liable for indirect or consequential loss.</p>
+<h2>8. Law</h2>
+<p>These terms are governed by the laws of the State of Wyoming, USA. Questions: <a href="mailto:{CONTACT}">{CONTACT}</a>.</p>
+</article>
+""")
+
+# The old "buy this domain" page now points home.
+EXTRA_FILES['/buy/index.html'] = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>sha3.si</title>
+<meta name="robots" content="noindex"><link rel="canonical" href="{DOMAIN}/">
+<meta http-equiv="refresh" content="0; url=/"></head>
+<body><p><a href="/">sha3.si</a></p></body></html>
+"""
 
 # 404
 NOTFOUND = page('/404.html', 'Page not found | sha3.si', 'Page not found on sha3.si.', f"""
 <article><h1>Page not found</h1>
-<p>That page does not exist. Try the <a href="/">SHA-3 calculator</a> or the <a href="/what-is-sha3/">SHA-3 guide</a>.</p>
+<p>That page does not exist. Try the <a href="/">MiCA website scan</a>, the <a href="/calculator/">SHA-3 calculator</a> or the <a href="/what-is-sha3/">SHA-3 guide</a>.</p>
 {buybox()}</article>""")
 
 
@@ -794,12 +1061,14 @@ def write(rel, text):
 
 for path, text in PAGES.items():
     write(path + 'index.html' if path.endswith('/') else path, text)
+for path, text in EXTRA_FILES.items():
+    write(path, text)
 write('/404.html', NOTFOUND)
 
-write('/robots.txt', f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
+write('/robots.txt', f"User-agent: *\nAllow: /\nDisallow: /r/\nDisallow: /account/\n\nSitemap: {DOMAIN}/sitemap.xml\n")
 write('/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n'
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-      ''.join(f'  <url><loc>{DOMAIN}{pth}</loc><lastmod>{TODAY}</lastmod></url>\n' for pth in PAGES) +
+      ''.join(f'  <url><loc>{DOMAIN}{pth}</loc><lastmod>{TODAY}</lastmod></url>\n' for pth in PAGES if pth not in NOINDEX) +
       '</urlset>\n')
 write('/CNAME', 'sha3.si\n')
 # IndexNow key file (shared key used by APPS/indexnow-daily). Bare token, no
@@ -810,13 +1079,19 @@ write('/.nojekyll', '')
 write('/favicon.svg', LOGO_SVG.replace(' class="mark"', ' xmlns="http://www.w3.org/2000/svg"')
       .replace(' aria-hidden="true"', '') + '\n')
 write('/site.webmanifest', json.dumps({
-    'name': 'sha3.si: SHA-3 hash tools', 'short_name': 'sha3.si', 'start_url': '/', 'display': 'standalone',
+    'name': 'sha3.si: MiCA website evidence and SHA-3 tools', 'short_name': 'sha3.si', 'start_url': '/', 'display': 'standalone',
     'background_color': '#0b0f14', 'theme_color': '#0b0f14',
     'icons': [{'src': '/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
               {'src': '/icon-512.png', 'sizes': '512x512', 'type': 'image/png'}]}, indent=1) + '\n')
 write('/llms.txt', f"""# sha3.si
 
-> Free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, plus explanations, comparisons, test vectors and code examples. The domain sha3.si itself is for sale.
+> MiCA website evidence for EU crypto-asset service providers: a free scan, read from Frankfurt, of the website duties in MiCA (pricing and fees policy, climate disclosures per crypto-asset, complaints procedure, risk warnings, white-paper links, regulated versus unregulated services), with a Claude review, SHA3-256 fingerprints and daily Bitcoin anchoring through OpenTimestamps. A service of {COMPANY}. Plus free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, explanations, test vectors and code examples.
+
+## MiCA service
+- [Free MiCA website scan]({DOMAIN}/): checks {len(CHECKLIST['checks'])} website duties for any of the {REGISTER_COUNT} firms in ESMA's MiCA register
+- [MiCA website requirements checklist]({DOMAIN}/mica-checklist/): each duty, its article, and what a page must contain
+- [Verify an evidence record]({DOMAIN}/evidence/): SHA3-256 record fingerprint, Merkle proof and Bitcoin anchor
+- Pricing: free scan; MiCA website audit EUR 1,490 one-off; monitor EUR 290 per month or EUR 2,900 per year with the audit included (excl. VAT)
 
 Key facts:
 - SHA-3 is standardised by NIST in FIPS 202 (August 2015) and based on Keccak (Bertoni, Daemen, Peeters, Van Assche).
@@ -826,7 +1101,7 @@ Key facts:
 - Ethereum Keccak-256 differs from SHA3-256 only in padding (0x01 vs 0x06); Keccak-256 of "" = {V['']['keccak256']}
 
 ## Pages
-- [SHA-3 calculator]({DOMAIN}/): hash text, hex or files locally in the browser
+- [SHA-3 calculator]({DOMAIN}/calculator/): hash text, hex or files locally in the browser
 - [What is SHA-3]({DOMAIN}/what-is-sha3/): history, sponge construction, family, uses
 - [SHA-3 vs SHA-256]({DOMAIN}/sha3-vs-sha256/): design, security, speed, when to use which
 - [SHA-3 vs Keccak-256]({DOMAIN}/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
@@ -834,8 +1109,5 @@ Key facts:
 - [Code examples]({DOMAIN}/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
 - [Is your website quantum-safe?]({DOMAIN}/quantum-safe/): free check whether a site accepts post-quantum key exchange (ML-KEM, X25519MLKEM768)
 - [SHA3-256 calculator]({DOMAIN}/sha3-256/), [SHA3-512 calculator]({DOMAIN}/sha3-512/), [Keccak-256 / Ethereum calculator]({DOMAIN}/keccak-256/), [SHAKE256 calculator]({DOMAIN}/shake256/)
-
-## Domain
-- [Buy sha3.si]({DOMAIN}/buy/): the domain is available; listing at {SALE_URL}
 """)
 print('built', len(PAGES) + 1, 'pages into', SITE)

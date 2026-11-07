@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify a sha3.si evidence record | sha3.si</title>
+<meta name="description" content="Verify a sha3.si record: its SHA3-256 fingerprint, its Merkle proof and its Bitcoin anchor through OpenTimestamps.">
+<link rel="canonical" href="https://sha3.si/evidence/">
+<meta name="sha3si-api" content="https://sha3si-app-amranihubs-projects.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="Verify a sha3.si evidence record | sha3.si">
+<meta property="og:description" content="Verify a sha3.si record: its SHA3-256 fingerprint, its Merkle proof and its Bitcoin anchor through OpenTimestamps.">
+<meta property="og:url" content="https://sha3.si/evidence/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: MiCA website evidence for EU crypto firms, read from Frankfurt and anchored in Bitcoin.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/mica.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Verify a sha3.si evidence record", "description": "Verify a sha3.si record: its SHA3-256 fingerprint, its Merkle proof and its Bitcoin anchor through OpenTimestamps.", "url": "https://sha3.si/evidence/", "dateModified": "2026-11-07", "author": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si", "logo": "https://sha3.si/icon-512.png", "email": "hello@sha3.si", "parentOrganization": {"@type": "Organization", "name": "Servolia LLC"}}, "publisher": {"@type": "Organization", "name": "sha3.si", "url": "https://sha3.si", "logo": "https://sha3.si/icon-512.png", "email": "hello@sha3.si", "parentOrganization": {"@type": "Organization", "name": "Servolia LLC"}}, "about": {"@type": "Thing", "name": "SHA-3", "sameAs": "https://en.wikipedia.org/wiki/SHA-3"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "Verify a sha3.si evidence record", "item": "https://sha3.si/evidence/"}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">MiCA scan</a><a href="/mica-checklist/">What we check</a><a href="/evidence/" class=on>Verify evidence</a><a href="/#pricing">Pricing</a><a href="/calculator/">SHA-3 tools</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero"><h1>Verify a record</h1>
+<p class="lead">Paste a record fingerprint from any sha3.si report. The Merkle proof is recomputed in your browser, and the Bitcoin proof can be checked with the open-source OpenTimestamps client.</p></section>
+<section class="panel">
+<form id="ev-form" class="qs-form" autocomplete="off">
+<label for="ev-hash" class="hidden">Record fingerprint</label>
+<input id="ev-hash" type="text" spellcheck="false" placeholder="64-character SHA3-256 record fingerprint" pattern="[0-9a-fA-F]{64}" required>
+<button class="btn primary" type="submit">Verify</button>
+</form>
+</section>
+<div id="evidence"></div>
+<article>
+<h2>How the evidence works</h2>
+<ol>
+<li><b>Pages.</b> The SHA3-256 of the exact bytes the server sent is stored with the URL, the HTTP status and the time. Change one byte and the fingerprint changes completely.</li>
+<li><b>Records.</b> Each report is serialised as canonical JSON (keys sorted, no spaces) and fingerprinted with SHA3-256. The fingerprint covers the check results and every page fingerprint.</li>
+<li><b>Days.</b> After each UTC day, all record fingerprints are sorted and combined pairwise with SHA3-256 into a Merkle tree. Its root is written into a small text file.</li>
+<li><b>Bitcoin.</b> The SHA-256 of that file is submitted to the OpenTimestamps calendars, which commit it into a Bitcoin transaction. The proof file (.ots) can be checked by anyone with the <a href="https://github.com/opentimestamps/opentimestamps-client" rel="noopener" target="_blank">ots client</a>: <code>ots verify sha3si-DAY.txt.ots</code>.</li>
+</ol>
+<p>You can recompute any SHA3-256 fingerprint yourself with our <a href="/sha3-256/">SHA3-256 calculator</a>.</p>
+</article>
+
+</main>
+<footer><div class="wrap">
+<span><b>sha3.si</b>: MiCA website evidence for crypto-asset service providers. Observations of what a website shows, not legal advice. A service of Servolia LLC, 30 N Gould St, Ste R, Sheridan, WY 82801, USA. <a href="mailto:hello@sha3.si">hello@sha3.si</a></span>
+<span>MiCA: <a href="/">Free scan</a> &middot; <a href="/mica-checklist/">Website checklist</a> &middot; <a href="/evidence/">Verify evidence</a> &middot; <a href="/#pricing">Pricing</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span>
+<span>SHA-3 tools: <a href="/calculator/">Calculator</a> &middot; <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a> &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: <a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a> &middot; <a href="/test-vectors/">Test vectors</a> &middot; <a href="/what-is-sha3/">What is SHA-3</a> &middot; <a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/sha3.min.js"></script><script src="/assets/mica.js" defer></script>
+</body>
+</html>

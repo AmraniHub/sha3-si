@@ -1,0 +1,15 @@
+{
+  "regions": ["fra1"],
+  "functions": {
+    "api/scan.js": { "maxDuration": 300, "includeFiles": "data/**" },
+    "api/cron.js": { "maxDuration": 300, "includeFiles": "data/**" },
+    "api/admin.js": { "maxDuration": 300, "includeFiles": "data/**" },
+    "api/evidence.js": { "maxDuration": 30, "includeFiles": "data/**" },
+    "api/health.js": { "maxDuration": 15, "includeFiles": "data/**" },
+    "api/lead.js": { "maxDuration": 15 },
+    "api/checkout.js": { "maxDuration": 30, "includeFiles": "data/**" },
+    "api/account.js": { "maxDuration": 30, "includeFiles": "data/**" },
+    "api/stripe-webhook.js": { "maxDuration": 30, "includeFiles": "data/**" }
+  },
+  "crons": [{ "path": "/api/cron", "schedule": "7 * * * *" }]
+}

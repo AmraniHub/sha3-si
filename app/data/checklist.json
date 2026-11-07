@@ -1,0 +1,62 @@
+{
+  "yardstick": "A disclosure counts as prominent when a visitor can reach it within two clicks of the homepage. This is the yardstick the Dutch AFM applied in its 2026 review of crypto-asset service providers.",
+  "checks": [
+    {
+      "id": "licence",
+      "title": "Authorisation statement",
+      "what": "The homepage says the firm is authorised under MiCA and by which supervisor.",
+      "ref": "MiCA Art. 66(2); ESMA statement ESMA35-1872330276-2329",
+      "source": "https://www.esma.europa.eu/sites/default/files/2025-07/ESMA35-1872330276-2329_-_MiCA_Statement_Access_to_Unregulated_Activities.pdf"
+    },
+    {
+      "id": "fees",
+      "title": "Pricing, costs and fees policy",
+      "what": "The policy on pricing, costs and fees is public and reachable within two clicks of the homepage.",
+      "ref": "MiCA Art. 66(4)",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1114/oj"
+    },
+    {
+      "id": "sustainability",
+      "title": "Climate and environmental impact",
+      "what": "Information on the principal adverse environmental and climate-related impacts of each crypto-asset's consensus mechanism is public and reachable within two clicks.",
+      "ref": "MiCA Art. 66(5); Commission Delegated Regulation (EU) 2025/422",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1114/oj"
+    },
+    {
+      "id": "complaints",
+      "title": "Complaints procedure",
+      "what": "The complaints-handling procedure is published, free of charge, with a template, and reachable within two clicks.",
+      "ref": "MiCA Art. 71(1)-(3); Commission Delegated Regulation (EU) 2025/294",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1114/oj"
+    },
+    {
+      "id": "whitepapers",
+      "title": "Links to white papers",
+      "what": "Firms that run a trading platform, exchange crypto-assets, give advice or manage portfolios link the white paper of each crypto-asset they serve.",
+      "ref": "MiCA Art. 66(3)",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1114/oj",
+      "applies_to_services": "bcdhi"
+    },
+    {
+      "id": "risk",
+      "title": "Risk warning",
+      "what": "Clients are warned of the risks of crypto-asset transactions where the offer is made, not only in a footer.",
+      "ref": "MiCA Art. 66(3)",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1114/oj"
+    },
+    {
+      "id": "unregulated",
+      "title": "Regulated and unregulated services told apart",
+      "what": "Products outside MiCA (for example some staking, lending, DeFi or NFT offers) are labelled as such and not presented under the MiCA authorisation.",
+      "ref": "ESMA statement ESMA35-1872330276-2329",
+      "source": "https://www.esma.europa.eu/sites/default/files/2025-07/ESMA35-1872330276-2329_-_MiCA_Statement_Access_to_Unregulated_Activities.pdf"
+    },
+    {
+      "id": "register",
+      "title": "Register entry matches the website",
+      "what": "The website listed for the firm in ESMA's MiCA register opens the firm's own site, and that site names the registered legal entity.",
+      "ref": "ESMA interim MiCA register",
+      "source": "https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica"
+    }
+  ]
+}

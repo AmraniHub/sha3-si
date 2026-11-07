@@ -1,6 +1,12 @@
 # sha3.si
 
-> Free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, plus explanations, comparisons, test vectors and code examples. The domain sha3.si itself is for sale.
+> MiCA website evidence for EU crypto-asset service providers: a free scan, read from Frankfurt, of the website duties in MiCA (pricing and fees policy, climate disclosures per crypto-asset, complaints procedure, risk warnings, white-paper links, regulated versus unregulated services), with a Claude review, SHA3-256 fingerprints and daily Bitcoin anchoring through OpenTimestamps. A service of Servolia LLC. Plus free SHA-3 tools and reference: an in-browser calculator for SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 and Ethereum Keccak-256, explanations, test vectors and code examples.
+
+## MiCA service
+- [Free MiCA website scan](https://sha3.si/): checks 8 website duties for any of the 389 firms in ESMA's MiCA register
+- [MiCA website requirements checklist](https://sha3.si/mica-checklist/): each duty, its article, and what a page must contain
+- [Verify an evidence record](https://sha3.si/evidence/): SHA3-256 record fingerprint, Merkle proof and Bitcoin anchor
+- Pricing: free scan; MiCA website audit EUR 1,490 one-off; monitor EUR 290 per month or EUR 2,900 per year with the audit included (excl. VAT)
 
 Key facts:
 - SHA-3 is standardised by NIST in FIPS 202 (August 2015) and based on Keccak (Bertoni, Daemen, Peeters, Van Assche).
@@ -10,7 +16,7 @@ Key facts:
 - Ethereum Keccak-256 differs from SHA3-256 only in padding (0x01 vs 0x06); Keccak-256 of "" = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
 
 ## Pages
-- [SHA-3 calculator](https://sha3.si/): hash text, hex or files locally in the browser
+- [SHA-3 calculator](https://sha3.si/calculator/): hash text, hex or files locally in the browser
 - [What is SHA-3](https://sha3.si/what-is-sha3/): history, sponge construction, family, uses
 - [SHA-3 vs SHA-256](https://sha3.si/sha3-vs-sha256/): design, security, speed, when to use which
 - [SHA-3 vs Keccak-256](https://sha3.si/sha3-vs-keccak/): why Ethereum hashes differ from NIST SHA-3
@@ -18,6 +24,3 @@ Key facts:
 - [Code examples](https://sha3.si/code-examples/): Python, Node.js, browser JS, Go, Rust, Java, PHP, C#, OpenSSL
 - [Is your website quantum-safe?](https://sha3.si/quantum-safe/): free check whether a site accepts post-quantum key exchange (ML-KEM, X25519MLKEM768)
 - [SHA3-256 calculator](https://sha3.si/sha3-256/), [SHA3-512 calculator](https://sha3.si/sha3-512/), [Keccak-256 / Ethereum calculator](https://sha3.si/keccak-256/), [SHAKE256 calculator](https://sha3.si/shake256/)
-
-## Domain
-- [Buy sha3.si](https://sha3.si/buy/): the domain is available; listing at https://forsale.dynadot.com/sha3.si

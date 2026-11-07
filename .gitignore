@@ -1,2 +1,7 @@
 __pycache__/
 checker.exe
+app/node_modules/
+app/.env*
+app/.data/
+app/.vercel/
+app/.deploy-*

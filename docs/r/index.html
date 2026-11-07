@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your MiCA website report | sha3.si</title>
+<meta name="description" content="A private sha3.si MiCA website report.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://sha3.si/r/">
+<meta name="sha3si-api" content="https://sha3si-app-amranihubs-projects.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sha3.si">
+<meta property="og:title" content="Your MiCA website report | sha3.si">
+<meta property="og:description" content="A private sha3.si MiCA website report.">
+<meta property="og:url" content="https://sha3.si/r/">
+<meta property="og:image" content="https://sha3.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="sha3.si: MiCA website evidence for EU crypto firms, read from Frankfurt and anchored in Bitcoin.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sha3.si/og.png">
+<meta name="theme-color" content="#0b0f14">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/mica.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "sha3.si", "item": "https://sha3.si/"}, {"@type": "ListItem", "position": 2, "name": "Your MiCA website report", "item": "https://sha3.si/r/"}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="logo" href="/"><svg class="mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0b0f14"/><path d="M14 18h36M14 32h36M14 46h36" stroke="#1f2a37" stroke-width="4"/><path d="M20 14v36M32 14v36M44 14v36" stroke="#39d3a0" stroke-width="5" stroke-linecap="round"/></svg><b>sha3<span>.si</span></b></a>
+<nav class="main"><a href="/">MiCA scan</a><a href="/mica-checklist/">What we check</a><a href="/evidence/">Verify evidence</a><a href="/#pricing">Pricing</a><a href="/calculator/">SHA-3 tools</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero"><h1>MiCA website report</h1>
+<p class="lead">A private link: anyone holding it can read this report, so share it only inside your firm.</p></section>
+<div id="report" class="scan-result">Loading the report&hellip;</div>
+
+<dialog class="modal" id="lead-dialog">
+<form id="lead-form" method="dialog" novalidate>
+<h3>Send me the full report</h3>
+<p class="note" id="lead-note"></p>
+<label>Work email<input type="email" name="email" required autocomplete="email"></label>
+<label>Name<input type="text" name="name" autocomplete="name"></label>
+<label>Company<input type="text" name="company" autocomplete="organization"></label>
+<label>Role<input type="text" name="role" placeholder="Compliance officer, MLRO, General Counsel..."></label>
+<label>Message (optional)<textarea name="message" id="lead-msg"></textarea></label>
+<input type="hidden" name="scan_id" id="lead-scan">
+<label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+<label class="check"><input type="checkbox" name="consent" required> I agree that sha3.si may email me about this request. See the <a href="/privacy/">privacy notice</a>.</label>
+<p class="form-err" id="lead-err" role="alert"></p>
+<div class="row-end"><button type="button" class="btn" id="lead-close">Close</button><button type="submit" class="btn primary">Send</button></div>
+</form>
+<div class="ok" id="lead-ok" hidden><h3>Thank you</h3><p>We reply from hello@sha3.si, normally the same working day.</p></div>
+</dialog>
+<dialog class="modal" id="buy-dialog">
+<form id="buy-form" method="dialog" novalidate>
+<h3>Order</h3>
+<p><b id="buy-plan"></b></p>
+<label>Work email (for the invoice and the report)<input type="email" name="email" required autocomplete="email"></label>
+<label>Website to audit or monitor<input type="text" name="host" required placeholder="example.com" inputmode="url"></label>
+<input type="hidden" name="plan"><input type="hidden" name="scan_id">
+<p class="note">Payment by card through Stripe. Prices exclude VAT; EU business customers add their VAT number at checkout (reverse charge). Billed by Servolia LLC.</p>
+<p class="form-err" id="buy-err" role="alert"></p>
+<div class="row-end"><button type="button" class="btn" id="buy-close">Cancel</button><button type="submit" class="btn primary">Continue to payment</button></div>
+</form>
+</dialog>
+
+</main>
+<footer><div class="wrap">
+<span><b>sha3.si</b>: MiCA website evidence for crypto-asset service providers. Observations of what a website shows, not legal advice. A service of Servolia LLC, 30 N Gould St, Ste R, Sheridan, WY 82801, USA. <a href="mailto:hello@sha3.si">hello@sha3.si</a></span>
+<span>MiCA: <a href="/">Free scan</a> &middot; <a href="/mica-checklist/">Website checklist</a> &middot; <a href="/evidence/">Verify evidence</a> &middot; <a href="/#pricing">Pricing</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span>
+<span>SHA-3 tools: <a href="/calculator/">Calculator</a> &middot; <a href="/sha3-256/">SHA3-256</a> &middot; <a href="/sha3-512/">SHA3-512</a> &middot; <a href="/keccak-256/">Keccak-256</a> &middot; <a href="/shake256/">SHAKE256</a> &middot; <a href="/quantum-safe/">Quantum-safe check</a></span>
+<span>Guides: <a href="/sha3-vs-sha256/">SHA-3 vs SHA-256</a> &middot; <a href="/test-vectors/">Test vectors</a> &middot; <a href="/what-is-sha3/">What is SHA-3</a> &middot; <a href="/sha3-vs-keccak/">SHA-3 vs Keccak</a> &middot; <a href="/llms.txt">llms.txt</a> &middot; <a href="/sitemap.xml">sitemap</a></span>
+</div></footer>
+<script src="/assets/mica.js" defer></script>
+</body>
+</html>
