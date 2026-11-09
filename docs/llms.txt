@@ -6,7 +6,7 @@
 - [Free MiCA website scan](https://sha3.si/): checks 8 website duties for any of the 389 firms in ESMA's MiCA register
 - [MiCA website requirements checklist](https://sha3.si/mica-checklist/): each duty, its article, and what a page must contain
 - [Verify an evidence record](https://sha3.si/evidence/): SHA3-256 record fingerprint, Merkle proof and Bitcoin anchor
-- Pricing: free scan; MiCA website audit EUR 1,490 one-off; monitor EUR 290 per month or EUR 2,900 per year with the audit included (excl. VAT)
+- Pricing (founding offer, first 5 firms): free scan; MiCA website audit EUR 290 one-off (normally EUR 1,490); monitor EUR 99 per month (normally EUR 290) or EUR 990 per year with the audit included (excl. VAT)
 
 Key facts:
 - SHA-3 is standardised by NIST in FIPS 202 (August 2015) and based on Keccak (Bertoni, Daemen, Peeters, Van Assche).

@@ -270,14 +270,14 @@
       el("h3", { text: gaps ? "Close " + (gaps === 1 ? "this gap" : "these " + gaps + " gaps") + " before your supervisor finds them" : "Keep it this way: get told the day something breaks" }),
       el("p", { text: "The audit adds a browser-rendered pass, a person checking every finding against the regulation, replacement wording in your site's language, and a signed evidence pack. The monitor re-reads your site every week and keeps a tamper-evident log." }),
       el("div", { class: "offer-btns" }, [
-        el("button", { type: "button", class: "btn primary", text: "Order the audit · €1,490", onclick: function () { checkout("audit", host, scanId); } }),
-        el("button", { type: "button", class: "btn", text: "Monitor weekly · €290/month", onclick: function () { checkout("monitor_month", host, scanId); } }),
+        el("button", { type: "button", class: "btn primary", text: "Order the audit · €290 founding offer", onclick: function () { checkout("audit", host, scanId); } }),
+        el("button", { type: "button", class: "btn", text: "Monitor weekly · €99/month", onclick: function () { checkout("monitor_month", host, scanId); } }),
         el("button", { type: "button", class: "btn", text: "Email me this report", onclick: function () { openLead(scanId, host); } }),
       ]),
     ]);
   }
 
-  var PLAN_NAMES = { audit: "MiCA website audit · €1,490 one-off", monitor_month: "Monitor · €290 per month", monitor_year: "Monitor · €2,900 per year, audit included" };
+  var PLAN_NAMES = { audit: "MiCA website audit · €290 one-off (founding offer, normally €1,490)", monitor_month: "Monitor · €99 per month (founding offer, normally €290)", monitor_year: "Monitor · €990 per year, audit included (founding offer)" };
 
   function checkout(plan, host, scanId) {
     var dlg = $("#buy-dialog");

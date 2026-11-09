@@ -9,12 +9,14 @@ import * as db from "./db.js";
 export const API_VERSION = "2024-06-20";
 export const SITE = process.env.SITE_URL || "https://sha3.si";
 
+// Founding offer for the first 5 firms (Operator ruling 2026-11-09). Normal prices:
+// audit 149000, monitor_month 29000, monitor_year 290000 (EUR cents).
 export const PLANS = {
-  audit: { name: "MiCA website audit", amount: 149000, mode: "payment",
+  audit: { name: "MiCA website audit", amount: 29000, mode: "payment",
     description: "EU scan, Claude review and a written report checked by a person, with evidence fingerprints. Delivered within 48 hours." },
-  monitor_month: { name: "MiCA website monitor (monthly)", amount: 29000, mode: "subscription", interval: "month",
+  monitor_month: { name: "MiCA website monitor (monthly)", amount: 9900, mode: "subscription", interval: "month",
     description: "Weekly scan from Frankfurt, email when something changes, tamper-evident evidence log, downloadable evidence pack." },
-  monitor_year: { name: "MiCA website monitor (annual, audit included)", amount: 290000, mode: "subscription", interval: "year",
+  monitor_year: { name: "MiCA website monitor (annual, audit included)", amount: 99000, mode: "subscription", interval: "year",
     description: "Everything in the monthly monitor for 12 months, two months free, and the full audit included." },
 };
 

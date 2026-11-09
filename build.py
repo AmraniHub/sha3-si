@@ -856,7 +856,8 @@ PAGES['/'] = page('/', 'MiCA website check for crypto firms: free scan from Fran
 </div>
 <div class="plan featured">
 <h3>MiCA website audit</h3>
-<div class="price">&euro;1,490 <small>one-off</small></div>
+<div class="price">&euro;290 <small>one-off</small></div>
+<p class="founding">Founding offer for the first 5 firms. Normal price <s>&euro;1,490</s>.</p>
 <ul>
 <li>A browser-rendered pass over your whole disclosure path</li>
 <li>Every finding checked by a person against the regulation</li>
@@ -868,14 +869,15 @@ PAGES['/'] = page('/', 'MiCA website check for crypto firms: free scan from Fran
 </div>
 <div class="plan">
 <h3>Monitor</h3>
-<div class="price">&euro;290 <small>per month</small></div>
+<div class="price">&euro;99 <small>per month</small></div>
+<p class="founding">Founding offer for the first 5 firms. Normal price <s>&euro;290</s> a month.</p>
 <ul>
 <li>A fresh scan from Frankfurt every week</li>
 <li>An email when a disclosure link breaks or a page changes</li>
 <li>A tamper-evident evidence log to show your supervisor</li>
 <li>An evidence pack you can download at any time: every record, its Merkle proof and its Bitcoin anchor</li>
 </ul>
-<div class="plan-btns"><button type="button" class="btn primary" data-plan="monitor_month">Monthly</button><button type="button" class="btn" data-plan="monitor_year">&euro;2,900 a year, audit included</button></div>
+<div class="plan-btns"><button type="button" class="btn primary" data-plan="monitor_month">Monthly</button><button type="button" class="btn" data-plan="monitor_year">&euro;990 a year, audit included</button></div>
 </div>
 </div>
 <p class="note">Prices exclude VAT. EU business customers: reverse charge, add your VAT number at checkout. Billed by {COMPANY} through Stripe. Several brands or websites? <a href="#" data-lead="group">Ask for a group price</a>.</p>
@@ -890,8 +892,8 @@ PAGES['/'] = page('/', 'MiCA website check for crypto firms: free scan from Fran
     {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'sha3.si MiCA website scan',
      'url': DOMAIN + '/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'Any (web browser)',
      'offers': [{'@type': 'Offer', 'name': 'Free scan', 'price': '0', 'priceCurrency': 'EUR'},
-                {'@type': 'Offer', 'name': 'MiCA website audit', 'price': '1490', 'priceCurrency': 'EUR'},
-                {'@type': 'Offer', 'name': 'Monitor (monthly)', 'price': '290', 'priceCurrency': 'EUR'}],
+                {'@type': 'Offer', 'name': 'MiCA website audit', 'price': '290', 'priceCurrency': 'EUR'},
+                {'@type': 'Offer', 'name': 'Monitor (monthly)', 'price': '99', 'priceCurrency': 'EUR'}],
      'provider': org()},
     faq_schema(mica_faq),
 ], scripts=MICA_JS)
@@ -1091,7 +1093,7 @@ write('/llms.txt', f"""# sha3.si
 - [Free MiCA website scan]({DOMAIN}/): checks {len(CHECKLIST['checks'])} website duties for any of the {REGISTER_COUNT} firms in ESMA's MiCA register
 - [MiCA website requirements checklist]({DOMAIN}/mica-checklist/): each duty, its article, and what a page must contain
 - [Verify an evidence record]({DOMAIN}/evidence/): SHA3-256 record fingerprint, Merkle proof and Bitcoin anchor
-- Pricing: free scan; MiCA website audit EUR 1,490 one-off; monitor EUR 290 per month or EUR 2,900 per year with the audit included (excl. VAT)
+- Pricing (founding offer, first 5 firms): free scan; MiCA website audit EUR 290 one-off (normally EUR 1,490); monitor EUR 99 per month (normally EUR 290) or EUR 990 per year with the audit included (excl. VAT)
 
 Key facts:
 - SHA-3 is standardised by NIST in FIPS 202 (August 2015) and based on Keccak (Bertoni, Daemen, Peeters, Van Assche).
