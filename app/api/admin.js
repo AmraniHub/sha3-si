@@ -9,6 +9,7 @@ import { stripe, mode, WEBHOOK_EVENTS, API_VERSION, SITE } from "../lib/stripe.j
 import { scan } from "../lib/scanner.js";
 import { review } from "../lib/review.js";
 import { seal, saveScan } from "../lib/store.js";
+import { sendMail, mailConfigured } from "../lib/mail.js";
 
 function authorised(req) {
   const keyValue = process.env.ADMIN_KEY || "";
@@ -62,6 +63,12 @@ export default async function handler(req, res) {
       ai: sealed.ai ? (sealed.ai.skipped ? sealed.ai.skipped : `${sealed.ai.findings.length} findings, USD ${sealed.ai.cost_usd}`) : null,
       link: `${SITE}/r/?id=${sealed.id}&t=${tokenValue}`, record_hash: sealed.record_hash,
     });
+  }
+  if (b.action === "test_mail") {
+    if (!mailConfigured) return send(res, 409, { error: "RESEND_API_KEY or MAIL_FROM is not set" });
+    const ok = await sendMail({ to: b.to || "hello@sha3.si", subject: "sha3.si sending test",
+      text: "This is a test of the emails sha3.si sends to clients (weekly monitor alerts). No action needed." });
+    return send(res, ok ? 200 : 502, { ok, from: process.env.MAIL_FROM });
   }
   return send(res, 400, { error: "unknown action" });
 }
