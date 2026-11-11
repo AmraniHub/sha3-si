@@ -128,7 +128,7 @@ async function monitors(log, budget) {
         const mailed = await sendMail({
           to: order.email,
           subject: `sha3.si: ${sealed.changes.length} change${sealed.changes.length === 1 ? "" : "s"} on ${order.host}`,
-          text: `This week's scan of ${order.host}, read from ${sealed.scanned_from.place}, found:\n\n- ${sealed.changes.join("\n- ")}\n\nReport and evidence: ${account}\n\nThese are observations of what the website showed, not legal advice.\nsha3.si, a service of Servolia LLC`,
+          text: `This week's scan of ${order.host}, read from ${sealed.scanned_from.place}, found:\n\n- ${sealed.changes.join("\n- ")}\n\nReport and evidence: ${account}\n\nThese are observations of what the website showed, not legal advice.`,
         });
         await alert("monitor: changes found", [order.host, ...sealed.changes.slice(0, 8), mailed ? "client emailed" : `EMAIL THE CLIENT: ${order.email || "(no email)"}`, `order ${order.id}`]);
       }
