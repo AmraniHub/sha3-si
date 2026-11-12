@@ -2,6 +2,8 @@
 // GET  /api/admin                              -> leads, orders, recent scans, AI spend, anchors
 // POST /api/admin {action: "connect_stripe"}   -> create the Stripe webhook endpoint and keep its secret
 // POST /api/admin {action: "prospect", url, ai} -> scan a prospect and return a private report link
+// POST /api/admin {action: "telegram_setup"}    -> register the customer bot webhook (secret header) and commands
+// POST /api/admin {action: "telegram_test", url?, audience?, plain?} -> one scan message to the owner chat
 import { timingSafeEqual } from "node:crypto";
 import { send, jsonBody } from "../lib/http.js";
 import * as db from "../lib/db.js";
@@ -10,6 +12,7 @@ import { scan } from "../lib/scanner.js";
 import { review } from "../lib/review.js";
 import { seal, saveScan } from "../lib/store.js";
 import { sendMail, mailConfigured } from "../lib/mail.js";
+import * as tg from "../lib/telegram.js";
 
 function authorised(req) {
   const keyValue = process.env.ADMIN_KEY || "";
@@ -69,6 +72,46 @@ export default async function handler(req, res) {
     const ok = await sendMail({ to: b.to || "hello@sha3.si", subject: "sha3.si sending test",
       text: "This is a test of the emails sha3.si sends to clients (weekly monitor alerts). No action needed." });
     return send(res, ok ? 200 : 502, { ok, from: process.env.MAIL_FROM });
+  }
+  if (b.action === "telegram_setup") {
+    // Register the customer bot's webhook from here, so its token never leaves Vercel.
+    const t = tg.customerToken();
+    if (!t) return send(res, 409, { error: "TELEGRAM_CUSTOMER_BOT_TOKEN is not set" });
+    const url = `${appUrl(req)}/api/telegram`;
+    const me = await tg.call(t, "getMe");
+    const hook = await tg.call(t, "setWebhook", { url, secret_token: tg.webhookSecret(t), allowed_updates: ["message"], drop_pending_updates: true, max_connections: 10 });
+    const cmds = await tg.call(t, "setMyCommands", { commands: [
+      { command: "start", description: "How to scan a website" }, { command: "help", description: "What the scan checks" },
+    ] });
+    await tg.call(t, "setMyShortDescription", { short_description: "Free MiCA website check for crypto firms, with SHA3-256 evidence. By sha3.si." });
+    const info = await tg.call(t, "getWebhookInfo");
+    return send(res, hook.ok ? 200 : 502, {
+      ok: Boolean(hook.ok), bot: me.ok ? "@" + me.result.username : null, url, set_webhook: hook.description || hook.ok,
+      commands: cmds.ok, webhook: info.ok ? { url: info.result.url, pending: info.result.pending_update_count, last_error: info.result.last_error_message || null } : null,
+    });
+  }
+  if (b.action === "telegram_test") {
+    // One scan message to the owner's chat: the newest stored free scan, or {url} scanned now.
+    if (!tg.alertsConfigured()) return send(res, 409, { error: "no alert bot token or TELEGRAM_CHAT_ID" });
+    let report, id, tokenValue;
+    if (b.url) {
+      const r = await scan({ input: b.url });
+      report = seal(r.report, "prospect");
+      tokenValue = await saveScan(report, r.pages);
+      id = report.id;
+    } else {
+      const row = await db.one("SELECT id, token, report FROM scans WHERE kind = 'free' AND passed IS NOT NULL ORDER BY created_at DESC LIMIT 1");
+      if (!row) return send(res, 404, { error: "no stored free scan; pass {url}" });
+      report = JSON.parse(row.report);
+      id = row.id;
+      tokenValue = row.token;
+    }
+    const audience = b.audience === "owner" ? "owner" : "customer";
+    const msg = tg.scanMessage(report, { id, token: tokenValue, audience, source: "admin test" });
+    const sent = b.plain
+      ? await tg.sendRich(tg.alertToken(), tg.ownerChat(), { ...msg, rich: { blocks: [{ type: "no_such_block" }] } })
+      : await tg.sendRich(tg.alertToken(), tg.ownerChat(), msg);
+    return send(res, sent.ok ? 200 : 502, { ...sent, host: report.target.host, record_hash: report.record_hash });
   }
   return send(res, 400, { error: "unknown action" });
 }

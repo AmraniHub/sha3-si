@@ -4,7 +4,7 @@
 // re-read from the API before an order changes state.
 import { rawBody, send } from "../lib/http.js";
 import * as db from "../lib/db.js";
-import { stripe, verifySignature, webhookSecret } from "../lib/stripe.js";
+import { stripe, verifySignature, webhookSecret, PLANS } from "../lib/stripe.js";
 import { alert } from "../lib/alert.js";
 
 const now = () => new Date().toISOString();
@@ -26,8 +26,15 @@ async function onCheckout(session) {
       s.amount_total, s.currency, orderId],
   );
   if (paid) {
-    const o = await db.one("SELECT plan, host, email FROM orders WHERE id = ?", [orderId]);
-    await alert(`paid: ${o ? o.plan : s.mode}`, [o && o.host, o && o.email, `${(s.amount_total / 100).toFixed(2)} ${String(s.currency).toUpperCase()}`, `order ${orderId}`].filter(Boolean));
+    const o = await db.one("SELECT plan, host, email, scan_id FROM orders WHERE id = ?", [orderId]);
+    const plan = o && PLANS[o.plan];
+    await alert(`paid: ${plan ? plan.name : s.mode}`, [
+      o && o.plan === "audit" ? "The audit runs from the hourly job; the draft comes here for your check (48 h promise)." : "",
+    ], [
+      ["Site", (o && o.host) || "?"], ["Email", (o && o.email) || "?"],
+      ["Amount", `${(s.amount_total / 100).toFixed(2)} ${String(s.currency).toUpperCase()}`],
+      ["Order", orderId], ...(o && o.scan_id ? [["From scan", o.scan_id]] : []), ["Mode", s.livemode ? "live" : "test"],
+    ]);
   }
 }
 

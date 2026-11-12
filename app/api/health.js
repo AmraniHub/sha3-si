@@ -4,6 +4,7 @@ import * as db from "../lib/db.js";
 import { configured, model } from "../lib/review.js";
 import { mode } from "../lib/stripe.js";
 import { registerAsOf } from "../lib/register.js";
+import { alertsConfigured, customerToken } from "../lib/telegram.js";
 
 export default async function handler(req, res) {
   if (cors(req, res)) return;
@@ -24,6 +25,7 @@ export default async function handler(req, res) {
     database: { backend: db.backend, reachable: dbOk },
     ai: { configured, model },
     payments: mode(),
+    telegram: { owner_alerts: alertsConfigured(), customer_bot: Boolean(customerToken()) },
     register_as_of: registerAsOf,
     last_anchor: lastAnchor,
   });

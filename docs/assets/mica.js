@@ -382,6 +382,8 @@
       .then(function (rj) {
         if (!rj[0].ok) { box.textContent = rj[1].error || "No report at this link."; return; }
         renderReport(rj[1].report, box, offer(rj[1].report, p.id));
+        // Links from the Telegram bot carry ?buy=<plan>: open the checkout form at once.
+        if (p.buy && PLAN_NAMES[p.buy]) checkout(p.buy, rj[1].report.target.host.replace(/^www\./, ""), p.id);
       })
       .catch(function () { box.textContent = "The report could not be loaded. Try again in a minute."; });
   }

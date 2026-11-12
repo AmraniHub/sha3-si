@@ -1,20 +1,9 @@
-// Owner alerts on Telegram. Optional: without TELEGRAM_BOT_TOKEN and
-// TELEGRAM_CHAT_ID set, alerts are skipped and everything else still works.
-export async function alert(title, lines = []) {
-  const tokenValue = process.env.TELEGRAM_BOT_TOKEN;
-  const chat = process.env.TELEGRAM_CHAT_ID;
-  if (!tokenValue || !chat) return false;
-  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const text = [`<b>sha3.si: ${esc(title)}</b>`, ...lines.map(esc)].join("\n");
-  try {
-    const r = await fetch(`https://api.telegram.org/bot${tokenValue}/sendMessage`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ chat_id: chat, text, parse_mode: "HTML", disable_web_page_preview: true }),
-      signal: AbortSignal.timeout(8000),
-    });
-    return r.ok;
-  } catch {
-    return false;
-  }
+// Owner alerts on Telegram, sent as rich messages with a plain-text fallback
+// (lib/telegram.js). Optional: without a bot token and TELEGRAM_CHAT_ID,
+// alerts are skipped and everything else still works.
+import { alertNotice } from "./telegram.js";
+
+export async function alert(title, lines = [], rows = []) {
+  const r = await alertNotice(title, rows, { lines: lines.filter(Boolean) });
+  return Boolean(r.ok);
 }

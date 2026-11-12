@@ -5,7 +5,7 @@
   "description": "sha3.si MiCA website evidence: scan API, Claude review, Stripe billing, evidence anchoring",
   "engines": { "node": "22.x" },
   "scripts": {
-    "test": "node --test tests/unit.test.mjs",
+    "test": "node --test tests/unit.test.mjs tests/telegram.test.mjs",
     "scan": "node tests/scan-cli.mjs"
   },
   "dependencies": {

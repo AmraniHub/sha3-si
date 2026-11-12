@@ -9,7 +9,8 @@
     "api/lead.js": { "maxDuration": 15 },
     "api/checkout.js": { "maxDuration": 30, "includeFiles": "data/**" },
     "api/account.js": { "maxDuration": 30, "includeFiles": "data/**" },
-    "api/stripe-webhook.js": { "maxDuration": 30, "includeFiles": "data/**" }
+    "api/stripe-webhook.js": { "maxDuration": 30, "includeFiles": "data/**" },
+    "api/telegram.js": { "maxDuration": 300, "includeFiles": "data/**" }
   },
   "crons": [{ "path": "/api/cron", "schedule": "7 * * * *" }]
 }

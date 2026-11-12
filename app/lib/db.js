@@ -37,6 +37,7 @@ const SCHEMA = [
      PRIMARY KEY (day, scope))`,
   `CREATE TABLE IF NOT EXISTS rate (key TEXT PRIMARY KEY, count INTEGER NOT NULL, reset_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS tg_updates (update_id INTEGER PRIMARY KEY, created_at TEXT NOT NULL)`,
 ];
 
 // Columns added after the first schema. Each runs once per instance; "duplicate
